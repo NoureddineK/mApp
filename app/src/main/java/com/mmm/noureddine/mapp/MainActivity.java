@@ -3,22 +3,13 @@ package com.mmm.noureddine.mapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Bundle;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -50,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         start_game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), Teams.class);
+                Intent intent = new Intent(getBaseContext(), TeamActivity.class);
                 startActivity(intent);
             }
         });
@@ -66,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.rollDices)
     public void lancherRollActivity(View v) {
-        Intent intent = new Intent(this, Roll_Dice.class);
+        Intent intent = new Intent(this, Roll_DiceActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.team)
     public void selectTeam(View v) {
-        Intent intent = new Intent(this, Teams.class);
+        Intent intent = new Intent(this, TeamActivity.class);
         startActivity(intent);
     }
 

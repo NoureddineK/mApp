@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import java.util.Random;
 
-public class Roll_Dice extends AppCompatActivity {
+public class Roll_DiceActivity extends AppCompatActivity {
     public static final Random RANDOM = new Random();
     private Button rollDices;
     private ImageView imageView1, imageView2;

@@ -5,7 +5,7 @@
     android:id="@+id/roll_Dice_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Roll_Dice">
+    tools:context=".Roll_DiceActivity">
 
     <ImageView
 

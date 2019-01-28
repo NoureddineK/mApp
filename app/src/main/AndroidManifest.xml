@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Roll_Dice" />
-        <activity android:name=".Teams" />
-        <activity android:name=".Players"></activity>
+        <activity android:name=".Roll_DiceActivity" />
+        <activity android:name=".TeamActivity" />
+        <activity android:name=".PlayerActivity"></activity>
     </application>
 
 </manifest>

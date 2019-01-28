@@ -29,4 +29,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife:7.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }

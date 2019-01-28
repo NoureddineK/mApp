@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Teams">
+    tools:context=".TeamActivity"
+    android:windowSoftInputMode="adjustResize|stateVisible">
 
     <TextView
         android:id="@+id/label_team"
@@ -31,7 +32,7 @@
         android:layout_marginEnd="8dp"
         android:hint="@string/input_team_name"
         android:inputType="text"
-        android:maxLength="15"
+        android:maxLength="25"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/plus_button"
         app:layout_constraintHorizontal_bias="0.752"
@@ -51,8 +52,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_team"/>
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="@dimen/input_team_width"
+        android:layout_height="282dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="72dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/validate_teams"
+        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/team_name"
+        app:layout_constraintTop_toBottomOf="@+id/team_name"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+
+
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/validate_teams"
         android:layout_width="@dimen/text_height"
         android:layout_height="@dimen/text_height"
         android:layout_marginStart="8dp"
