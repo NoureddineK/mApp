@@ -1,10 +1,12 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.mmm.noureddine.mapp.R;
 
 import java.util.Random;
 

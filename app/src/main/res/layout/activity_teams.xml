@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TeamActivity"
-    android:windowSoftInputMode="adjustResize|stateVisible">
+    tools:context=".activities.TeamActivity"
+    android:windowSoftInputMode="adjustResize|stateVisible"
+    android:screenOrientation="portrait">
 
     <TextView
         android:id="@+id/label_team"

@@ -1,4 +1,4 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.components;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

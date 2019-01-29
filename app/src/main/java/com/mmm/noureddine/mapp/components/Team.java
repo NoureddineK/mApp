@@ -1,4 +1,4 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.components;
 
 public class Team {
     private int teamID;

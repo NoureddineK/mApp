@@ -1,4 +1,4 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import com.mmm.noureddine.mapp.db.DBHandler;
+import com.mmm.noureddine.mapp.R;
+import com.mmm.noureddine.mapp.components.RecyclerItemClickListener;
+import com.mmm.noureddine.mapp.components.Team;
+import com.mmm.noureddine.mapp.adapter.TeamsAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 

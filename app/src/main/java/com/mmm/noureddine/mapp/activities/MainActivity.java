@@ -1,4 +1,4 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.view.animation.RotateAnimation;
 import android.view.View;
 import android.widget.Button;
 
+import com.mmm.noureddine.mapp.R;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.team)
     public void selectTeam(View v) {
-        Intent intent = new Intent(this, TeamActivity.class);
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
 

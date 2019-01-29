@@ -1,14 +1,13 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
+
+import com.mmm.noureddine.mapp.components.Player;
+import com.mmm.noureddine.mapp.components.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TABLE_PLAYER = "Player";
     private static final String PLAYER_ID = "playerID";
     private static final String PLAYER_PSEUDO = "playerPseudo";
+    private static final String PLAYER_IMAGE = "playerImage";
 
     private static final String TABLE_TEAM = "Team";
     private static final String TEAM_ID = "teamID";
@@ -37,7 +37,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 + TABLE_PLAYER + " ( "
                 + PLAYER_ID + " " +
                 "INTEGER PRIMARY KEY AUTOINCREMENT ,"
-                + PLAYER_PSEUDO + " TEXT UNIQUE  NOT NULL" + " );";
+                + PLAYER_PSEUDO + " TEXT UNIQUE  NOT NULL , " +
+                BLOB_IMAGE + " BLOB " + " );";
         db.execSQL(CREATE_TABLE_PLAYER);
 
 
@@ -75,9 +76,9 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addPlayer(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-       // values.put(PLAYER_ID, player.getID()); // Player Name
+        // values.put(PLAYER_ID, player.getID()); // Player Name
         values.put(PLAYER_PSEUDO, player.getPlayerPseudo()); // Player Name
-
+        values.put(PLAYER_IMAGE, player.getPlayerImage());
         // Inserting Row
         db.insert(TABLE_PLAYER, null, values);
         db.close(); // Closing database connection
@@ -95,6 +96,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 Player player = new Player();
                 player.setID(Integer.parseInt(cursor.getString(0)));
                 player.setPlayerPseudo(cursor.getString(1));
+                player.setPlayerImage(cursor.getBlob(2));
 // Adding contact to list
                 playerList.add(player);
             } while (cursor.moveToNext());
@@ -118,6 +120,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PLAYER_ID, player.getPlayerPseudo());
+
 // updating row
         return db.update(TABLE_PLAYER, values, PLAYER_ID + " = ?",
                 new String[]{String.valueOf(player.getID())});
@@ -151,7 +154,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addTeam(Team team) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-       // values.put(TEAM_ID, team.getID()); // Player Name
+        // values.put(TEAM_ID, team.getID()); // Player Name
         values.put(TEAM_NAME, team.getName()); // Player Name
 
         // Inserting Row

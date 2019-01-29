@@ -1,7 +1,9 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.mmm.noureddine.mapp.R;
 
 public class DBActivity extends AppCompatActivity {
 

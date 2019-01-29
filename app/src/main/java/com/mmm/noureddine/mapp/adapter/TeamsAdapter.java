@@ -1,12 +1,13 @@
-package com.mmm.noureddine.mapp;
+package com.mmm.noureddine.mapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.mmm.noureddine.mapp.R;
+import com.mmm.noureddine.mapp.components.Team;
 
 import java.util.List;
 

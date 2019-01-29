@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayerActivity"
-    android:windowSoftInputMode="adjustResize|stateVisible">
+    tools:context=".activities.PlayerActivity"
+    android:windowSoftInputMode="adjustResize|stateVisible"
+    android:screenOrientation="portrait">
 
     <TextView
         android:id="@+id/label_player"
@@ -56,7 +57,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="@dimen/input_team_width"
-        android:layout_height="282dp"
+        android:layout_height="186dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="72dp"
@@ -83,5 +84,38 @@
         app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/check_button" />
+
+    <Button
+        android:id="@+id/take_picture_btn"
+        android:layout_width="@dimen/plus_button_width"
+        android:layout_height="@dimen/input_team_height"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/photo"
+        android:layout_marginBottom="8dp"
+        android:onClick="takeAphoto"
+        app:layout_constraintBottom_toTopOf="@+id/validate_players"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/plus_button"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="188dp"
+        android:layout_height="137dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </android.support.constraint.ConstraintLayout>
