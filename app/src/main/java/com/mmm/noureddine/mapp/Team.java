@@ -1,38 +1,34 @@
 package com.mmm.noureddine.mapp;
 
 public class Team {
-    private String title, genre, year;
+    private int teamID;
+    private String teamName;
 
     public Team() {
     }
 
-    public Team(String title, String genre, String year) {
-        this.title = title;
-        this.genre = genre;
-        this.year = year;
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
+    public Team(int teamID, String teamName) {
+        this.teamID = teamID;
+        this.teamName = teamName;
     }
 
-    public String getTitle() {
-        return title;
+    public int getID() {
+        return this.teamID;
     }
 
-    public void setTitle(String name) {
-        this.title = name;
+    public void setID(int id) {
+        this.teamID = id;
     }
 
-    public String getYear() {
-        return year;
+    public String getName() {
+        return this.teamName;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setName(String teamName) {
+        this.teamName = teamName;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 }

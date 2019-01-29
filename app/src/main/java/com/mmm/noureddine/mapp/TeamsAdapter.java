@@ -4,28 +4,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
+public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.MyViewHolder> {
 
-    private List<Team> moviesList;
-
+    private List<Team> teamList;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        public TextView teamItem;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
+            teamItem = (TextView) view.findViewById(R.id.teamNameItem);
         }
+
     }
 
 
-    public MoviesAdapter(List<Team> moviesList) {
-        this.moviesList = moviesList;
+    public TeamsAdapter(List<Team> teamList) {
+        this.teamList = teamList;
     }
 
     @Override
@@ -38,14 +38,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Team team = moviesList.get(position);
-        holder.title.setText(team.getTitle());
-        holder.genre.setText(team.getGenre());
-        holder.year.setText(team.getYear());
+        Team team = teamList.get(position);
+        holder.teamItem.setText(team.getName());
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return teamList.size();
     }
+
+
+
 }

@@ -5,4 +5,5 @@
     <string name="input_team_name">Input your team name...</string>
     <string name="ready">You Are Ready! </string>
     <string name="let_go">Let\'s Go... </string>
+    <string name="input_pseudo_name">Input your Pseudo...</string>
 </resources>

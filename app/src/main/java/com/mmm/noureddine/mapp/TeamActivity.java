@@ -1,19 +1,35 @@
 package com.mmm.noureddine.mapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class TeamActivity extends AppCompatActivity {
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
+public class TeamActivity extends AppCompatActivity {
+    private final static int REQUEST_CODE_1 = 1;
     private List<Team> teamList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private MoviesAdapter mAdapter;
+    private TeamsAdapter mAdapter;
+
+    @Bind(R.id.plus_button)
+    Button plus_button;
+
+    private EditText team_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,68 +37,74 @@ public class TeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teams);
         //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
 
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        team_name = (EditText) findViewById(R.id.team_name);
 
-        mAdapter = new MoviesAdapter(teamList);
+        mAdapter = new TeamsAdapter(teamList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareMovieData();
+        prepareTeamData();
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                      //  int itemPosition = recyclerView.getChildLayoutPosition(view);
+                        Team item = teamList.get(position);
+                        Toast.makeText(getBaseContext(), item.getName() +" Selected ", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getBaseContext(), PlayerActivity.class);
+                        intent.putExtra("message", "This message comes from PassingDataSourceActivity's first button");
+                        startActivity(intent);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        //Team item = teamList.get(position);
+                        //Toast.makeText(getBaseContext(), item.getName()+ " Loo", Toast.LENGTH_LONG).show();
+                    }
+                })
+        );
+
     }
-    private void prepareMovieData() {
-        Team team = new Team("Mad Max: Fury Road", "Action & Adventure", "2015");
-        teamList.add(team);
 
-        team = new Team("Inside Out", "Animation, Kids & Family", "2015");
-        teamList.add(team);
+    @OnClick(R.id.plus_button)
+    public void addingTeams(View v) {
+            AddingTeamData(team_name.getText().toString());
+    }
 
-        team = new Team("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
-        teamList.add(team);
+    private void prepareTeamData() {
 
-        team = new Team("Shaun the Sheep", "Animation", "2015");
-        teamList.add(team);
+        DBHandler db = new DBHandler(this);
+        Log.d("Insert: ", "Inserting ..");
+        db.addTeam(new Team("Team A"));
+        db.addTeam(new Team("Team B"));
 
-        team = new Team("The Martian", "Science Fiction & Fantasy", "2015");
-        teamList.add(team);
+// Reading all shops
+        Log.d("Reading: ", "Reading all Teams..");
+        List<Team> teams = db.getAllTeams();
 
-        team = new Team("Mission: Impossible Rogue Nation", "Action", "2015");
-        teamList.add(team);
-
-        team = new Team("Up", "Animation", "2009");
-        teamList.add(team);
-
-        team = new Team("Star Trek", "Science Fiction", "2009");
-        teamList.add(team);
-
-        team = new Team("The LEGO Team", "Animation", "2014");
-        teamList.add(team);
-
-        team = new Team("Iron Man", "Action & Adventure", "2008");
-        teamList.add(team);
-
-        team = new Team("Aliens", "Science Fiction", "1986");
-        teamList.add(team);
-
-        team = new Team("Chicken Run", "Animation", "2000");
-        teamList.add(team);
-
-        team = new Team("Back to the Future", "Science Fiction", "1985");
-        teamList.add(team);
-
-        team = new Team("Raiders of the Lost Ark", "Action & Adventure", "1981");
-        teamList.add(team);
-
-        team = new Team("Goldfinger", "Action & Adventure", "1965");
-        teamList.add(team);
-
-        team = new Team("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
-        teamList.add(team);
-
+        for (Team team : teams) {
+            String log = "Id: " + team.getID() + " ,Name: " + team.getName();
+// Writing shops to log
+            Log.d("Team: : ", log);
+            teamList.add(team);
+        }
         mAdapter.notifyDataSetChanged();
     }
+
+
+    private void AddingTeamData(String name) {
+        if (!name.equals("") && !name.equals(" ")) {
+            DBHandler db = new DBHandler(this);
+            Log.d("Insert: ", "Inserting ..");
+            Team team = new Team(name);
+            db.addTeam(team);
+            teamList.add(team);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+
 }

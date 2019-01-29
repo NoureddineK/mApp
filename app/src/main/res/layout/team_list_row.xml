@@ -12,25 +12,12 @@
     android:paddingTop="@dimen/row_padding_vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/teamNameItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textColor="@color/title"
         android:textSize="16dp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title" />
-
-    <TextView
-        android:id="@+id/year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/year" />
 
 </RelativeLayout>

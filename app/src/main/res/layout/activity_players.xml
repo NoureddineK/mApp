@@ -4,6 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayerActivity">
+    tools:context=".PlayerActivity"
+    android:windowSoftInputMode="adjustResize|stateVisible">
+
+    <TextView
+        android:id="@+id/label_player"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_width="@dimen/input_team_width"
+        android:layout_height="@dimen/text_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/input_pseudo_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/player_name"
+        android:layout_width="@dimen/input_team_width"
+        android:layout_height="@dimen/input_team_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Name ..."
+        android:inputType="text"
+        android:maxLength="25"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintHorizontal_bias="0.752"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_player" />
+
+
+    <Button
+        android:id="@+id/plus_button"
+        android:layout_width="@dimen/plus_button_width"
+        android:layout_height="@dimen/input_team_height"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:text=" + "
+        android:onClick="addingPlayers"
+        android:textCursorDrawable="@color/colorAccent"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_player"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="@dimen/input_team_width"
+        android:layout_height="282dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="72dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/validate_teams"
+        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/team_name"
+        app:layout_constraintTop_toBottomOf="@+id/player_name"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+
+
+    <ImageView
+        android:id="@+id/validate_players"
+        android:layout_width="@dimen/text_height"
+        android:layout_height="@dimen/text_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.974"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/check_button" />
 
 </android.support.constraint.ConstraintLayout>
