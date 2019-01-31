@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--TOPIC-->
+    <string-array name="topic">
+
+        <item>Films, Séries TV &amp; Dessins Animés</item>
+        <item>Personnages Célèbres</item>
+        <item>Activités Sportives &amp; Récréatives</item>
+        <item>Animaux &amp; Insectes</item>
+        <item>Expressions</item>
+        <item>Métiers</item>
+    </string-array>
+
+
+    <!-- FILMS -->
+    <string-array name="films">
+        <item name="film_0">Avengers</item>
+        <item name="film_1">La Reine Des Neiges</item>
+        <item name="film_2">Les Visiteurs</item>
+        <item name="film_3">Rambo</item>
+        <item name="film_4">Star Wars</item>
+    </string-array>
+
+    <!-- ANIMAUX -->
+    <string-array name="animaux">
+        <item name="animal_0">Dauphin</item>
+        <item name="animal_1">Serpent</item>
+        <item name="animal_2">Cochon</item>
+        <item name="animal_3">Koala</item>
+        <item name="animal_4">Singe</item>
+    </string-array>
+
+    <!-- ACTIVITES-->
+    <string-array name="activites">
+        <item name="activite_0">Pétanque</item>
+        <item name="activite_1">Ping-Pong</item>
+        <item name="activite_2">Basket-Ball</item>
+        <item name="activite_3">Trampoline</item>
+        <item name="activite_4">SkateBoard</item>
+    </string-array>
+
+    <!-- EXPRESSIONS-->
+    <string-array name="expressions">
+        <item name="expression_0">Les Carottes Sont Cuites</item>
+        <item name="expression_1">Être Marteau</item>
+        <item name="expression_2">Avoir Une Faim De Loup</item>
+        <item name="expression_3">Avoir Du Pain Sur La Planche</item>
+        <item name="expression_4">Avoir Un Chat Dans La Gorge</item>
+    </string-array>
+
+    <!-- PERSONNAGES -->
+    <string-array name="personnages">
+        <item name="personnage_0">Zorro</item>
+        <item name="personnage_1">Roméo</item>
+        <item name="personnage_2">Neil Armstrong</item>
+        <item name="personnage_3">Dark Vador</item>
+        <item name="personnage_4">Michael Jordan</item>
+    </string-array>
+
+    <!-- METIERS -->
+    <string-array name="metiers">
+        <item name="metier_0">Policier</item>
+        <item name="metier_1">Pédiatre</item>
+        <item name="metier_2">Styliste</item>
+        <item name="metier_3">Maître-Nageur</item>
+        <item name="metier_4">Bibliothécaire</item>
+
+    </string-array>
+
+
+</resources>

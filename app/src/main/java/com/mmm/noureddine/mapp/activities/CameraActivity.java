@@ -1,9 +1,11 @@
 package com.mmm.noureddine.mapp.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,12 +16,15 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
+import com.mmm.noureddine.mapp.components.AsyncTaskRunner;
+import com.mmm.noureddine.mapp.utils.DbBitmapUtility;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,13 +38,16 @@ public class CameraActivity extends Activity {
     static final int REQUEST_TAKE_PHOTO = 1;
     private CircleImageView imageView;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    String mCurrentPhotoPath;
+    public static String mCurrentPhotoPath;
+    String playerName = "";
+    ProgressDialog pDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my_camera);
-        this.imageView = (CircleImageView) this.findViewById(R.id.imageView1);
+        imageView = (CircleImageView) this.findViewById(R.id.imageView1);
         Button photoButton = (Button) this.findViewById(R.id.button1);
         photoButton.setOnClickListener(new View.OnClickListener() {
 
@@ -53,9 +61,14 @@ public class CameraActivity extends Activity {
                 } else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    showProgressDialog();
                 }
+
+
             }
         });
+        playerName = getIntent().getStringExtra("playerName");
+        Log.d("playerName: ", playerName);
     }
 
     @Override
@@ -73,34 +86,39 @@ public class CameraActivity extends Activity {
                 }
 
                 if (photoFile != null) {
+                    // AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner(this);
+                    //asyncTaskRunner.execute("5");
+                    //showProgressDialog();
                     Uri photoURI = FileProvider.getUriForFile(this,
                             "Android/data/com.mmm.noureddine.mapp/files/Pictures/",
                             photoFile);
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
 
+                    Intent intent = new Intent();
+                    intent.putExtra("path", mCurrentPhotoPath); //value should be your string from the edittext
+                    setResult(1, intent); //The data you want to send back
+
+
+                    //  cameraIntent.putExtra("path", mCurrentPhotoPath);
+                    File imgFile = new File(mCurrentPhotoPath);
+                    if (imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        imageView.setImageBitmap(myBitmap);
+                    }
+
                 }
             }
+            //dismissProgressDialog();
         }
+       // finish();
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        File imgFile = new File(mCurrentPhotoPath);
-        if (imgFile.exists()) {
-            Toast.makeText(this, mCurrentPhotoPath, Toast.LENGTH_LONG).show();
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            imageView.setImageBitmap(myBitmap);
-        }
-        ;
-    }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = playerName + "_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -113,5 +131,27 @@ public class CameraActivity extends Activity {
         return image;
     }
 
+    private void showProgressDialog() {
+        if (pDialog == null) {
+            pDialog = new ProgressDialog(CameraActivity.this);
+            pDialog.setMessage("Loading. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+
+        }
+        pDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        if (pDialog != null && pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
 
 }

@@ -6,4 +6,13 @@
     <string name="ready">You Are Ready! </string>
     <string name="let_go">Let\'s Go... </string>
     <string name="input_pseudo_name">Input your Pseudo...</string>
+    <string name="image_popup">Take a picture!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+
+
+
+
 </resources>

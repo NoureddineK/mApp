@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.mmm.noureddine.mapp.R;
 import com.mmm.noureddine.mapp.components.RecyclerItemClickListener;
@@ -34,6 +36,10 @@ public class TeamActivity extends AppCompatActivity {
     @Bind(R.id.plus_button)
     Button plus_button;
 
+    @Bind(R.id.validate_teams)
+    ImageView validate_teams;
+
+
     private EditText team_name;
 
     @Override
@@ -51,23 +57,26 @@ public class TeamActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareTeamData();
+        try {
+            prepareTeamData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                      //  int itemPosition = recyclerView.getChildLayoutPosition(view);
+                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        //  int itemPosition = recyclerView.getChildLayoutPosition(view);
                         Team item = teamList.get(position);
-                        Toast.makeText(getBaseContext(), item.getName() +" Selected ", Toast.LENGTH_LONG).show();
-
-                        Intent intent = new Intent(getBaseContext(), PlayerActivity.class);
-                        intent.putExtra("message", "This message comes from PassingDataSourceActivity's first button");
-                        startActivity(intent);
+                        Toast.makeText(getBaseContext(), item.getName() + " Selected ", Toast.LENGTH_LONG).show();
                     }
 
-                    @Override public void onLongItemClick(View view, int position) {
-                        //Team item = teamList.get(position);
-                        //Toast.makeText(getBaseContext(), item.getName()+ " Loo", Toast.LENGTH_LONG).show();
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Team item = teamList.get(position);
+                        removeTeam(item);
+                        Toast.makeText(getBaseContext(), item.getName()+ " Deleted", Toast.LENGTH_LONG).show();
                     }
                 })
         );
@@ -76,37 +85,45 @@ public class TeamActivity extends AppCompatActivity {
 
     @OnClick(R.id.plus_button)
     public void addingTeams(View v) {
-            AddingTeamData(team_name.getText().toString());
+        AddingTeamData(team_name.getText().toString());
     }
 
-    private void prepareTeamData() {
+    private void prepareTeamData() throws Exception {
 
         DBHandler db = new DBHandler(this);
         Log.d("Insert: ", "Inserting ..");
         db.addTeam(new Team("Team A"));
         db.addTeam(new Team("Team B"));
-
-// Reading all shops
-        Log.d("Reading: ", "Reading all Teams..");
         List<Team> teams = db.getAllTeams();
-
         for (Team team : teams) {
-            String log = "Id: " + team.getID() + " ,Name: " + team.getName();
-// Writing shops to log
-            Log.d("Team: : ", log);
             teamList.add(team);
         }
         mAdapter.notifyDataSetChanged();
     }
 
 
+    @OnClick(R.id.validate_teams)
+    public void validateTeams(View v) {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        startActivity(intent);
+    }
+
+
     private void AddingTeamData(String name) {
-        if (!name.equals("") && !name.equals(" ")) {
+        if (!name.matches("")) {
             DBHandler db = new DBHandler(this);
-            Log.d("Insert: ", "Inserting ..");
             Team team = new Team(name);
             db.addTeam(team);
             teamList.add(team);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void removeTeam(Team team) {
+        if (team != null) {
+            teamList.remove(team);
+            DBHandler db = new DBHandler(this);
+            db.deleteTeam(team);
             mAdapter.notifyDataSetChanged();
         }
     }

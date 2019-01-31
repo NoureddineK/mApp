@@ -8,6 +8,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,8 +26,7 @@
         <activity android:name=".activities.Roll_DiceActivity" />
         <activity android:name=".activities.TeamActivity" />
         <activity android:name=".activities.PlayerActivity" />
-        <activity android:name=".activities.DBActivity" />
-        <activity android:name=".activities.CameraActivity"></activity>
+        <activity android:name=".activities.CameraActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -35,9 +35,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".activities.AsyncActivity" />
     </application>
 
 </manifest>

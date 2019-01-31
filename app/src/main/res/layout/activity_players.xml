@@ -25,7 +25,7 @@
 
     <EditText
         android:id="@+id/player_name"
-        android:layout_width="@dimen/input_team_width"
+        android:layout_width="170dp"
         android:layout_height="@dimen/input_team_height"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
@@ -34,11 +34,22 @@
         android:inputType="text"
         android:maxLength="25"
         android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintEnd_toStartOf="@+id/team_choice"
         app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_player" />
 
+    <Spinner
+        android:id="@+id/team_choice"
+        android:layout_width="101dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintTop_toBottomOf="@+id/label_player"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/plus_button"
@@ -57,12 +68,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="@dimen/input_team_width"
-        android:layout_height="186dp"
+        android:layout_height="193dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/validate_teams"
+        app:layout_constraintBottom_toTopOf="@+id/topic_choice_spinner"
         app:layout_constraintEnd_toStartOf="@+id/plus_button"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/team_name"
@@ -70,19 +81,21 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-
-
     <ImageView
         android:id="@+id/validate_players"
         android:layout_width="@dimen/text_height"
         android:layout_height="@dimen/text_height"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:onClick="validatePlayers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topic_choice_spinner"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/check_button" />
 
     <Button
@@ -102,20 +115,33 @@
         app:layout_constraintTop_toBottomOf="@+id/plus_button"
         app:layout_constraintVertical_bias="0.031" />
 
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="188dp"
-        android:layout_height="137dp"
+    <Spinner
+        android:id="@+id/topic_choice_spinner"
+        android:layout_width="194dp"
+        android:layout_height="65dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/validate_players"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintStart_toEndOf="@+id/topic_label"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
+    <TextView
+        android:id="@+id/topic_label"
+        android:layout_width="73dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Choice a Topic"
+        android:maxLines="2"
+        app:layout_constraintTop_toTopOf="@+id/topic_choice_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/topic_choice_spinner"
+        app:layout_constraintBottom_toTopOf="@+id/validate_players"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>

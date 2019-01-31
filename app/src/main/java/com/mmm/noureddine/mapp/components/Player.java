@@ -1,10 +1,16 @@
 package com.mmm.noureddine.mapp.components;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player  implements Serializable {
 
     private int playerID;
     private String playerPseudo;
-    private byte[] imagePlayer;
+
+
+
+    private String playerTeam;
+    private byte[] playerImage;
 
     public Player() {
     }
@@ -18,10 +24,25 @@ public class Player {
         this.playerPseudo = playerPseudo;
     }
 
+    public Player(int playerID, String playerPseudo,String playerTeam,  byte[] image) {
+        this.playerID = playerID;
+        this.playerPseudo = playerPseudo;
+        this.playerImage = image;
+        this.playerTeam = playerTeam;
+    }
+
     public Player(String playerPseudo, byte[] image) {
         this.playerPseudo = playerPseudo;
-        this.imagePlayer = image;
+        this.playerImage = image;
     }
+
+    public Player(String playerPseudo,String playerTeam,  byte[] image) {
+        this.playerPseudo = playerPseudo;
+        this.playerTeam = playerTeam;
+        this.playerImage = image;
+    }
+
+
 
     public void setID(int playerID) {
         this.playerID = playerID;
@@ -40,12 +61,18 @@ public class Player {
     }
 
     public byte[] getPlayerImage() {
-        return this.imagePlayer;
+        return this.playerImage;
     }
 
     public void setPlayerImage(byte[] image) {
-        this.imagePlayer = image;
+        this.playerImage = image;
     }
 
+    public String getPlayerTeam() {
+        return playerTeam;
+    }
 
+    public void setPlayerTeam(String playerTeam) {
+        this.playerTeam = playerTeam;
+    }
 }
