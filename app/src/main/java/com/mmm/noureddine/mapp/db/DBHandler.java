@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.mmm.noureddine.mapp.components.Join_Team_Player;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.components.Team;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 21;
     private static final String DATABASE_NAME = "letsmimeDB.db";
     private static final String TABLE_PLAYER = "Player";
     private static final String PLAYER_ID = "playerID";
@@ -82,7 +83,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public Player loadPlayer(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_PLAYER,
-                new String[]{PLAYER_ID, PLAYER_PSEUDO,PLAYER_TEAM, PLAYER_IMAGE}, PLAYER_ID + "=?",
+                new String[]{PLAYER_ID, PLAYER_PSEUDO, PLAYER_TEAM, PLAYER_IMAGE}, PLAYER_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -295,6 +296,51 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+
+    public List<Join_Team_Player> getJoin_Team_Player() {
+        List<Join_Team_Player> list = new ArrayList<Join_Team_Player>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_JOIN;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+// looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Join_Team_Player join = new Join_Team_Player();
+                join.setTeam(cursor.getString(1));
+                join.setPlayer(cursor.getString(2));
+// Adding contact to list
+                list.add(join);
+            } while (cursor.moveToNext());
+        }
+// return contact list
+        return list;
+    }
+
+    public List<String> getJoin_Player(String team) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> listPlayers = new ArrayList<>();
+        String selectQuery = "SELECT " + JOIN_PLAYER + " FROM " + TABLE_JOIN
+               +" WHERE " + JOIN_TEAM + " = '" + team + "';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listPlayers.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+        return listPlayers;
+    }
+
+
+    // Deleting a Player
+    public void deleteJoinPlayer(String player) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_JOIN, JOIN_PLAYER + " = ?",
+                new String[]{String.valueOf(player)});
+        db.close();
+    }
 
     public Player findHandler(String playerPseudo) {
         return null;

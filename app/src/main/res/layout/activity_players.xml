@@ -39,6 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_player" />
 
+
     <Spinner
         android:id="@+id/team_choice"
         android:layout_width="101dp"
@@ -86,16 +87,15 @@
         android:layout_width="@dimen/text_height"
         android:layout_height="@dimen/text_height"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:onClick="validatePlayers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topic_choice_spinner"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/check_button" />
 
     <Button
@@ -118,13 +118,13 @@
     <Spinner
         android:id="@+id/topic_choice_spinner"
         android:layout_width="194dp"
-        android:layout_height="65dp"
+        android:layout_height="66dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="42dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/validate_players"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintHorizontal_bias="0.682"
         app:layout_constraintStart_toEndOf="@+id/topic_label"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
@@ -135,6 +135,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Choice a Topic"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="20dp"
+        android:textAlignment="center"
         android:maxLines="2"
         app:layout_constraintTop_toTopOf="@+id/topic_choice_spinner"
         app:layout_constraintBottom_toBottomOf="@+id/topic_choice_spinner"

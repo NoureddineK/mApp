@@ -62,7 +62,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private List<String> topicList;
     Spinner topic_choice_spinner;
-
+    String topicName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +132,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Toast.makeText(getBaseContext(), topicList.get(position) + " Selected ", Toast.LENGTH_LONG).show();
                 // nameTeam = topicList.get(position);
+                topicName = topicList.get(position);
             }
 
             @Override
@@ -185,8 +186,10 @@ public class PlayerActivity extends AppCompatActivity {
 
         DBHandler db = new DBHandler(this);
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
-        db.addPlayer(new Player("Player A", "Team A", DbBitmapUtility.getBytes(icon)));
-        db.addPlayer(new Player("Player B", "Team B", DbBitmapUtility.getBytes(icon)));
+       // db.addPlayer(new Player("Player A", "Team A", DbBitmapUtility.getBytes(icon)));
+      //  db.addPlayer(new Player("Player B", "Team B", DbBitmapUtility.getBytes(icon)));
+      //  db.addPlayerToTeam("Player A", "Team A");
+       // db.addPlayerToTeam("Player B", "Team B");
         List<Player> players = db.getAllPlayers();
         for (Player player : players) {
             playerList.add(player);
@@ -212,6 +215,7 @@ public class PlayerActivity extends AppCompatActivity {
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
             Player player;
             player = new Player(name1,nameTeam,DbBitmapUtility.getBytes(icon));
+            db.addPlayerToTeam(name1, nameTeam);
             db.addPlayer(player);
             playerList.add(player);
             mAdapter.notifyDataSetChanged();
@@ -228,6 +232,7 @@ public class PlayerActivity extends AppCompatActivity {
     @OnClick(R.id.validate_players)
     public void validatePlayers(View v) {
         Intent intent = new Intent(getBaseContext(), Roll_DiceActivity.class);
+        intent.putExtra("topicName",topicName );
         startActivityForResult(intent, 0);
     }
 
@@ -277,6 +282,7 @@ public class PlayerActivity extends AppCompatActivity {
             playerList.remove(player);
             DBHandler db = new DBHandler(this);
             db.deletePlayer(player);
+            db.deleteJoinPlayer(player.getPlayerPseudo());
             mAdapter.notifyDataSetChanged();
         }
     }

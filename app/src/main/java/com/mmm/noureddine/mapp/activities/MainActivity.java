@@ -25,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
   //  ImageView start_game;
     CircleImageView start_game;
 
-    @Bind(R.id.rollDices)
+ /*   @Bind(R.id.rollDices)
     Button recycleB;
 
     @Bind(R.id.team)
     Button team;
 
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.rollDices)
+   /* @OnClick(R.id.rollDices)
     public void lancherRollActivity(View v) {
         Intent intent = new Intent(this, Roll_DiceActivity.class);
         startActivity(intent);
@@ -72,4 +72,5 @@ public class MainActivity extends AppCompatActivity {
        startActivity(intent);
        // PopUp.displayAlert(this, "Message!", "yes", "no");
     }
+    */
 }

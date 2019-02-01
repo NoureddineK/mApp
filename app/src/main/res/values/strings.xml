@@ -10,9 +10,14 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="films">Films, Séries TV &amp; Dessins Animés</string>
+    <string name="personnages">Personnages Célèbres</string>
+    <string name="activites">Activités Sportives &amp; Récréatives</string>
+    <string name="animaux">Animaux &amp; Insectes</string>
+    <string name="expressions">Expressions</string>
+    <string name="metiers">Métiers</string>
 
-
-
+    <string name="start_mime">Let\'s get started...</string>
 
 
 </resources>
