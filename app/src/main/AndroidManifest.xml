@@ -23,9 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Roll_DiceActivity" />
-        <activity android:name=".activities.TeamActivity" />
-        <activity android:name=".activities.PlayerActivity" />
+        <activity
+            android:name=".activities.Roll_DiceActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.TeamActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.PlayerActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activities.CameraActivity" />
 
         <provider

@@ -117,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity {
         topic_choice_spinner = (Spinner) findViewById(R.id.topic_choice_spinner);
 
         this.topicList = Arrays.asList(getResources().getStringArray(R.array.topic));
-
+        Log.d("topicList: ", topicList.toString());
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, topicList);
@@ -127,7 +127,7 @@ public class PlayerActivity extends AppCompatActivity {
         topic_choice_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Toast.makeText(getBaseContext(), topicList.get(position) + " Selected ", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getBaseContext(), topicList.get(position) + " Selected ", Toast.LENGTH_LONG).show();
                 // nameTeam = topicList.get(position);
                 topicName = topicList.get(position);
             }

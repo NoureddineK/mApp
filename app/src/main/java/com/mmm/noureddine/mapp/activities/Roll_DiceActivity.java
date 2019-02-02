@@ -2,6 +2,7 @@ package com.mmm.noureddine.mapp.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
 import com.mmm.noureddine.mapp.components.Player;
@@ -34,10 +37,8 @@ public class Roll_DiceActivity extends AppCompatActivity {
     public static final Random RANDOM = new Random();
     private Button rollDices;
     private ImageView dices;
-    private Chronometer chronometer;
     private Button start_chrono;
     private Button stop_chrono;
-    private Button restart_chrono;
     private TextView team_id;
     private TextView player_id;
     private CircleImageView finger_good_view;
@@ -46,8 +47,10 @@ public class Roll_DiceActivity extends AppCompatActivity {
     private List<String> listMime;
     private TextView mime;
     private Button next_palyerBtn;
-    private Button result_btn ;
+    private Button result_btn;
     private Button restart_btn;
+    private ProgressBar progressBar;
+    private MyCountDownTimer myCountDownTimer;
 
     private Boolean sessionEnd;
     private int index = 0;
@@ -58,8 +61,8 @@ public class Roll_DiceActivity extends AppCompatActivity {
     private DBHandler db;
     private HashMap<String, List<Player>> hash;
     private List<String> teams;
-    @Bind(R.id.openWikiBtn)
-    Button openWikiB;
+
+    private Button openWikiBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,63 +73,59 @@ public class Roll_DiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int value1 = generateInt(1, 3);
-
-                int res1 = getResources().getIdentifier("dice_" + value1, "drawable", "com.mmm.noureddine.mapp");
-
+                int res1 = getResources().getIdentifier("dice_" + value1, "drawable",
+                        "com.mmm.noureddine.mapp");
                 dices.setImageResource(res1);
 
             }
         });
 
-        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        openWikiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                // TODO Auto-generated method stub
-                String currentTime = chronometer.getText().toString();
-                if (currentTime.equals("00:05")) {
-                   /*  Commenter Pour Tests
-                    AssetFileDescriptor afd = null;
-                     */
+            public void onClick(View v) {
+                String escapedQuery = null;
+                try {
+                    if (!sessionEnd && !listMime.isEmpty()) {
+                        if (index == 0) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.google.fr"));
+                            startActivity(intent);
+                        } else {
+                            String s = listMime.get(index - 1);
+                            escapedQuery = URLEncoder.encode(s, "UTF-8");
+                            Uri uri = Uri.parse("http://www.google.fr/#q=" + escapedQuery);
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                        }
 
-                   /*   try {
-                      afd = getAssets().openFd("times_up.mp3");
-                        MediaPlayer audio = new MediaPlayer();
-                        audio.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                        audio.prepare();
-                        audio.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(getBaseContext(), "No Mime was found!", Toast.LENGTH_LONG).show();
                     }
-*/
-                    // chronometer.setBase(SystemClock.elapsedRealtime());
-                    nextPlayer();
-                    chronometer.stop();
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         });
+
+
         start_chrono.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 generateNewMime();
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                chronometer.start();
-
+                progressBar.setProgress(0);
+                myCountDownTimer.start();
+                start_chrono.setEnabled(false);
+                finger_bad_view.setEnabled(true);
+                finger_good_view.setEnabled(true);
             }
         });
+
         stop_chrono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                chronometer.stop();
+                myCountDownTimer.onFinish();
 
-            }
-        });
-        restart_chrono.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                chronometer.start();
-                generateNewMime();
             }
         });
 
@@ -153,32 +152,20 @@ public class Roll_DiceActivity extends AppCompatActivity {
         restart_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
+            }
+        });
+        result_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), ResultActivity.class);
+                //intent.putExtra("topicName", topicName);
+                startActivityForResult(intent, 0);
             }
         });
 
+
     }
-
-    @OnClick(R.id.openWikiBtn)
-    public void openWiki(View v) {
-        String escapedQuery = null;
-        try {
-            if (!sessionEnd && !listMime.isEmpty()) {
-                escapedQuery = URLEncoder.encode(listMime.get(index - 1), "UTF-8");
-                Uri uri = Uri.parse("http://www.google.fr/#q=" + escapedQuery);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://www.google.fr"));
-                startActivity(intent);
-            }
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void startSession() {
 
@@ -195,18 +182,22 @@ public class Roll_DiceActivity extends AppCompatActivity {
     private void init() {
         rollDices = (Button) findViewById(R.id.rollDices);
         dices = (ImageView) findViewById(R.id.imageView1);
-        chronometer = (Chronometer) findViewById(R.id.chronometer);
         start_chrono = (Button) findViewById(R.id.start_chrono);
         stop_chrono = (Button) findViewById(R.id.stop_chrono);
-        restart_chrono = (Button) findViewById(R.id.restart_chrono);
         mime = (TextView) findViewById(R.id.mime_id);
         team_id = (TextView) findViewById(R.id.team_id);
         player_id = (TextView) findViewById(R.id.player_id);
         finger_good_view = (CircleImageView) findViewById(R.id.finger_good_view);
         finger_bad_view = (CircleImageView) findViewById(R.id.finger_bad_view);
+        finger_bad_view.setEnabled(false);
+        finger_good_view.setEnabled(false);
         next_palyerBtn = (Button) findViewById(R.id.next_palyerBtn);
         result_btn = (Button) findViewById(R.id.result_btn);
         restart_btn = (Button) findViewById(R.id.restart_btn);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        myCountDownTimer = new MyCountDownTimer(30000, 1500);
+        openWikiBtn = (Button) findViewById(R.id.openWikiBtn);
+
         Picasso.get()
                 .load(R.drawable.finger_good)
                 .into(finger_good_view);
@@ -249,13 +240,18 @@ public class Roll_DiceActivity extends AppCompatActivity {
             topicName = "activites";
             listMime = Arrays.asList(getResources().getStringArray(R.array.activites));
 
+        } else if (getString(R.string.actions).matches(topicName)) {
+            topicName = "actions";
+            listMime = Arrays.asList(getResources().getStringArray(R.array.actions));
+
         } else {
-            topicName = "metiers";
-            listMime = Arrays.asList(getResources().getStringArray(R.array.metiers));
+            topicName = "animaux";
+            listMime = Arrays.asList(getResources().getStringArray(R.array.animaux));
         }
         Collections.shuffle(listMime);
         data.put(topicName, listMime);
         maxMime = listMime.size();
+
     }
 
     private int generateInt(int min, int max) {
@@ -273,6 +269,11 @@ public class Roll_DiceActivity extends AppCompatActivity {
         } else {
             mime.setText("Finish!");
             sessionEnd = true;
+            stop_chrono.setEnabled(false);
+            start_chrono.setEnabled(false);
+            next_palyerBtn.setEnabled(false);
+            rollDices.setEnabled(false);
+            myCountDownTimer.onFinish();
         }
 
     }
@@ -286,6 +287,36 @@ public class Roll_DiceActivity extends AppCompatActivity {
             numTeam = 0;
             if (numPlayer >= hash.get(teams.get(numTeam)).size()) {
                 numPlayer = 0;
+            }
+
+        }
+
+    }
+
+
+    public class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            int progress = (int) (millisUntilFinished / 300);
+            progressBar.setProgress(progress);
+        }
+
+        @Override
+        public void onFinish() {
+            this.cancel();
+            // textCounter.setText("Task completed");
+            progressBar.setProgress(100);
+            start_chrono.setEnabled(true);
+            finger_bad_view.setEnabled(false);
+            finger_good_view.setEnabled(false);
+            nextPlayer();
+            if(sessionEnd){
+                start_chrono.setEnabled(false);
             }
 
         }

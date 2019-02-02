@@ -90,7 +90,7 @@
         app:layout_constraintStart_toStartOf="@+id/rollDices"
         app:layout_constraintTop_toBottomOf="@+id/rollDices" />
 
-    <Chronometer
+    <!--<Chronometer
         android:id="@+id/chronometer"
         android:layout_width="161dp"
         android:layout_height="50dp"
@@ -104,52 +104,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chrono_cmd" />
+        app:layout_constraintTop_toBottomOf="@+id/chrono_cmd" />-->
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/chrono_cmd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/chronometer"
+        app:layout_constraintBottom_toTopOf="@+id/mime_id"
         app:layout_constraintEnd_toEndOf="@+id/mime_id"
-        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="@+id/mime_id"
-        app:layout_constraintTop_toBottomOf="@+id/mime_id">
+        app:layout_constraintTop_toBottomOf="@+id/mime_id"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="348dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:max="100"
+            android:min="0"
+            android:scaleY="6"
+            android:progress="100"
+            app:layout_constraintBottom_toTopOf="@+id/start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
             android:id="@+id/start_chrono"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:text="Start"
-
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Button
             android:id="@+id/stop_chrono"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="Stop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/restart_chrono"
-            app:layout_constraintHorizontal_bias="0.533"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/progressbar"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <Button
-            android:id="@+id/restart_chrono"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Restart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/start_chrono"
-            app:layout_constraintTop_toTopOf="@+id/start_chrono"
-            app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -164,7 +172,7 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
+        app:layout_constraintTop_toBottomOf="@+id/chrono_cmd" />
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/finger_bad_view"
@@ -187,28 +195,25 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/holo_orange_dark"
-        android:onClick="openWiki"
         android:text="@string/google"
         app:layout_constraintEnd_toStartOf="@+id/finger_bad_view"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/finger_good_view"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
+        app:layout_constraintTop_toBottomOf="@+id/chrono_cmd" />
 
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/final_layout"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/openWikiBtn"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintTop_toBottomOf="@+id/openWikiBtn">
 
         <Button
             android:id="@+id/next_palyerBtn"
@@ -223,29 +228,22 @@
             android:id="@+id/result_btn"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/score"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/restart_btn"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/restart_btn"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/new_game"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/next_palyerBtn"
-            app:layout_constraintTop_toTopOf="@+id/next_palyerBtn" />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.TeamActivity"
-    android:windowSoftInputMode="adjustResize|stateVisible"
+    android:windowSoftInputMode="adjustResize|stateHidden"
     android:screenOrientation="portrait">
 
     <TextView

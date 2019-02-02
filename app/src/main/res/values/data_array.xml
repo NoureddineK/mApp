@@ -10,62 +10,533 @@
         <item>Animaux &amp; Insectes</item>
         <item>Expressions</item>
         <item>Métiers</item>
+        <item>Actions</item>
     </string-array>
 
 
     <!-- FILMS -->
     <string-array name="films">
-        <item name="film_0">Avengers</item>
-        <item name="film_1">La Reine Des Neiges</item>
-        <item name="film_2">Les Visiteurs</item>
-        <item name="film_3">Rambo</item>
-        <item name="film_4">Star Wars</item>
+        <item>Avengers</item>
+        <item>La Reine Des Neiges</item>
+        <item>Les Visiteurs</item>
+        <item>Rambo</item>
+        <item>Star Wars</item>
+        <item>Titanic</item>
+        <item>Grease</item>
+        <item>E.T</item>
+        <item>Le grand blond avec une chaussure noire</item>
+        <item>S.O.S Fantômes</item>
+        <item>Retour vers le futur</item>
+        <item>Pulp Fiction</item>
+        <item>Motus</item>
+        <item>Questions pour un champions</item>
+        <item>N\'oubliez pas les paroles</item>
+        <item>Fort Boyard</item>
+        <item>Qui veut gagner des millions</item>
+        <item>Intervilles</item>
+        <item>Touche pas à mon poste</item>
+        <item>Batman</item>
+        <item>Chantons sous la pluie</item>
+        <item>Cendrillon</item>
+        <item>Une vie de chien</item>
+        <item>Frankenstein</item>
+        <item>La Guerre des étoiles</item>
+        <item>Blanche-Neige et les sept nains</item>
+        <item>Géant</item>
+        <item>Striptease</item>
+        <item>La ruée vers l’or</item>
+        <item>Danse lascive</item>
+        <item>King Kong</item>
+        <item>Coup de foudre à Manhattan</item>
+        <item>Bambi</item>
+        <item>Sixième sens</item>
+        <item>Le vilain petit canard</item>
+        <item>Dracula</item>
+        <item>Autant en emporte le vent</item>
+        <item>Top Gun</item>
+        <item>La soupe au canard</item>
+        <item>Le chanteur de jazz</item>
+        <item>Docteur Jivago</item>
+        <item>Une leçon de piano</item>
+        <item>La mort aux trousses</item>
+        <item>Une jolie femme</item>
+        <item>Danse avec les loups</item>
+        <item>Les larmes du soleil</item>
+        <item>Sueurs froides</item>
+        <item>Le Roi Lion</item>
+        <item>La mélodie du bonheur</item>
+        <item>La Guerre des tuques</item>
+        <item>Dumbo</item>
+        <item>L’été de mes 11 ans</item>
+        <item>Le médaillon</item>
+        <item>Peter Pan</item>
+        <item>Le train sifflera trois fois TABLEAU 12</item>
+        <item>Une bouteille à la mer</item>
+        <item>Platoon</item>
+        <item>Mon fantôme d’amour</item>
+        <item>La ligne rouge</item>
+        <item>Le mariage de mon meilleur ami</item>
+        <item>La cité des anges</item>
+        <item>Anges</item>
+        <item>démons</item>
+        <item>Les oiseaux se cachent pour mourir</item>
+        <item>Le tour du monde en 80 jours</item>
+        <item>Officier et gentleman</item>
+        <item>Boire et déboires</item>
+        <item>Vous avez un message</item>
+        <item>Rain Man</item>
+        <item>Maman, j\'ai raté l\'avion</item>
+        <item>Mort vivant</item>
+        <item>Hulk</item>
+        <item>2000 lieux sous les mers</item>
+        <item>Les dents de la mer</item>
+        <item>Vendredi 13</item>
+        <item>Rocky</item>
+        <item>58 minutes pour vivre</item>
+        <item>Chinatown</item>
+        <item>De plein fouet</item>
+        <item>Le Seigneur des anneaux</item>
+        <item>Bandits</item>
+        <item>Le Silence des agneaux</item>
+        <item>Casino</item>
+        <item>Taxi Driver</item>
+        <item>Mon voisin, le tueur</item>
+        <item>Psychose</item>
+        <item>Karaté Kid</item>
+        <item>Vol au-dessus d\'un nid de coucou</item>
+        <item>Otage</item>
+
+
     </string-array>
 
     <!-- ANIMAUX -->
     <string-array name="animaux">
-        <item name="animal_0">Dauphin</item>
-        <item name="animal_1">Serpent</item>
-        <item name="animal_2">Cochon</item>
-        <item name="animal_3">Koala</item>
-        <item name="animal_4">Singe</item>
+        <item>Dauphin</item>
+        <item>Serpent</item>
+        <item>Cochon</item>
+        <item>Koala</item>
+        <item>Singe</item>
+        <item>Pingouin</item>
+        <item>Héron</item>
+        <item>Girafe</item>
+        <item>Panda</item>
+        <item>Babouin</item>
+        <item>Marmotte</item>
+        <item>Dauphin</item>
+        <item>Bernard l\'ermite</item>
+        <item>Boa</item>
+        <item>Chameau</item>
+        <item>Autruche</item>
+        <item>Papillon</item>
+        <item>Écureuil</item>
+        <item>Lion</item>
+        <item>Hibou</item>
+        <item>Scarabée</item>
+        <item>Lama</item>
+        <item>Zèbre</item>
+        <item>Koala</item>
+        <item>Fourmi</item>
+        <item>Souris</item>
+        <item>Taupe</item>
+        <item>Raton-laveur</item>
+        <item>Grenouille</item>
+        <item>Biche</item>
+        <item>Escargot</item>
+        <item>Phoque</item>
+        <item>Tortue</item>
+        <item>Chien de traineau</item>
+        <item>Étoile de mer</item>
+        <item>Caméléon</item>
+        <item>Loutre</item>
+        <item>Paon</item>
+        <item>Kangourou</item>
+        <item>Mouton</item>
+        <item>Canard</item>
+        <item>Bison</item>
+        <item>Dinosaure</item>
+        <item>Tatou</item>
+        <item>Poule</item>
+        <item>Hyène</item>
+        <item>Faucon</item>
+        <item>Anaconda</item>
+        <item>Scorpion</item>
+        <item>Coccinelle</item>
+        <item>Têtard</item>
+        <item>Saumon</item>
+        <item>Mille-pattes</item>
+        <item>Hippocampe</item>
+        <item>Libellule</item>
+        <item>Tapir</item>
+        <item>Poisson clown</item>
+        <item>Raton laveur</item>
+        <item>Pic vert</item>
+        <item>Chauve-souris</item>
+        <item>Poulpe</item>
+        <item>Lapin</item>
+        <item>Dindon</item>
+        <item>Paresseux</item>
+        <item>Éléphant</item>
+        <item>Moustique</item>
+        <item>Crabe</item>
+        <item>Papillon</item>
+        <item>Chauve souris</item>
+        <item>Piranha</item>
+        <item>Poisson-chat</item>
+        <item>Limace</item>
+        <item>Pieuvre</item>
+        <item>Pigeon</item>
+        <item>Araignée</item>
+        <item>Chat</item>
+        <item>Tigre</item>
+        <item>Singe</item>
+
+
     </string-array>
 
     <!-- ACTIVITES-->
     <string-array name="activites">
-        <item name="activite_0">Pétanque</item>
-        <item name="activite_1">Ping-Pong</item>
-        <item name="activite_2">Basket-Ball</item>
-        <item name="activite_3">Trampoline</item>
-        <item name="activite_4">SkateBoard</item>
+        <item>Pétanque</item>
+        <item>Ping-Pong</item>
+        <item>Basket-Ball</item>
+        <item>Trampoline</item>
+        <item>SkateBoard</item>
+        <item>Planche à voile</item>
+        <item>Rugby</item>
+        <item>Boxe anglaise</item>
+        <item>Tennis de table</item>
+        <item>Lancer de disque</item>
+        <item>Parachutisme</item>
+        <item>Gymnastique</item>
+        <item>Plongée sous marine</item>
+        <item>Curling</item>
+        <item>Badminton</item>
+        <item>Aviron</item>
+        <item>Triathlon</item>
+        <item>Spéléologie</item>
+        <item>Foot</item>
+        <item>Basket</item>
+        <item>Natation</item>
+        <item>Taikwendo</item>
+        <item>Volley Ball</item>
+        <item>Lancer du marteau</item>
+        <item>Saut en longueur</item>
+        <item>saut en hauteur</item>
+        <item>110 mètres haies</item>
+
+
     </string-array>
 
     <!-- EXPRESSIONS-->
     <string-array name="expressions">
-        <item name="expression_0">Les Carottes Sont Cuites</item>
-        <item name="expression_1">Être Marteau</item>
-        <item name="expression_2">Avoir Une Faim De Loup</item>
-        <item name="expression_3">Avoir Du Pain Sur La Planche</item>
-        <item name="expression_4">Avoir Un Chat Dans La Gorge</item>
+        <item>Les Carottes Sont Cuites</item>
+        <item>Être Marteau</item>
+        <item>Avoir Une Faim De Loup</item>
+        <item>Avoir Du Pain Sur La Planche</item>
+        <item>Avoir Un Chat Dans La Gorge</item>
+        <item>Anguille sous roche</item>
+        <item>Tomber dans les pommes</item>
+        <item>Mettre son grain de sel</item>
+        <item>Être un ours mal léché</item>
+        <item>Un froid de canard</item>
+        <item>Jeter le bébé avec l\'eau du bain</item>
+        <item>Faut pas pousser mémé dans les orties</item>
+        <item>Poser un lapin</item>
+        <item>Filer à l\'anglaise</item>
+        <item>Fier comme un pou</item>
+        <item>Avoir une araignée au plafond</item>
+        <item>Rouler des yeux de merlan frit</item>
+        <item>La poule aux oeufs d\'or</item>
+        <item>Bailler aux corneilles</item>
+        <item>Pousser comme un champignon</item>
+        <item>Toucher du bois</item>
+        <item>Tirer les vers du nez</item>
+        <item>Revenir bredouille</item>
+        <item>Raconter des salades</item>
+        <item>Vouloir le beurre et l\'argent du beurre</item>
+        <item>Être au bout du rouleau</item>
+        <item>Devoir une fière chandelle</item>
+        <item>Avoir un poil dans la main</item>
+        <item>Comme on fait son lit</item>
+        <item>on se couche</item>
+        <item>Être au pied du mur</item>
+        <item>Dire ses 4 vérités</item>
+        <item>Être sage comme une image</item>
+        <item>Passer comme un lettre à la poste</item>
+        <item>Péter plus haut que son cul</item>
+        <item>Rouler à tombeau ouvert</item>
+        <item>La goutte d\'eau qui fait déborder le vase</item>
+        <item>Ronfler comme un loir</item>
+        <item>Avoir les yeux plus gros que le ventre</item>
+        <item>S\'ennuyer comme un rat mort</item>
+        <item>Copains comme cochons</item>
+        <item>Donner sa langue au chat</item>
+        <item>Remettre les pendules à l\'heure</item>
+        <item>L\'habit ne fait pas le moine</item>
+        <item>Mettre la main à la pâte</item>
+        <item>Se mettre en 4</item>
+        <item>Tête de linotte</item>
+        <item>Épée de Damoclès</item>
+        <item>Avoir le cafard</item>
+        <item>Tirer le diable par la queue</item>
+        <item>Avoir l\'estomac dans les talons</item>
+        <item>Donner de la confiture à un cochon</item>
+        <item>Courir sur le haricot</item>
+        <item>Tuer le temps</item>
+        <item>Avoir la moutarde qui monte au nez</item>
+        <item>Être sourd comme un pot</item>
+        <item>Pleurer comme une madeleine</item>
+        <item>Rire jaune</item>
+        <item>N\'avoir pas froid aux yeux</item>
+        <item>La bave du crapaud n\'atteint pas la blanche colombe</item>
+        <item>Mentir comme un arracheur de dents</item>
+        <item>Un moulin à paroles</item>
+        <item>Être muet comme une carpe</item>
+        <item>Avoir les crocs</item>
+        <item>Se faire un sang d\'encre</item>
+        <item>Avoir plusieurs cordes à son arc</item>
+        <item>Remuer le couteau dans la plaie</item>
+        <item>Se prendre un râteau</item>
+        <item>Pisser dans un violon</item>
+
+
     </string-array>
 
     <!-- PERSONNAGES -->
     <string-array name="personnages">
-        <item name="personnage_0">Zorro</item>
-        <item name="personnage_1">Roméo</item>
-        <item name="personnage_2">Neil Armstrong</item>
-        <item name="personnage_3">Dark Vador</item>
-        <item name="personnage_4">Michael Jordan</item>
+        <item>Zorro</item>
+        <item>Roméo</item>
+        <item>Neil Armstrong</item>
+        <item>Dark Vador</item>
+        <item>Michael Jordan</item>
+        <item>Astérix le gaulois</item>
+        <item>Bill Gates</item>
+        <item>Lancelot</item>
+        <item>Nanouk l\'esquimau</item>
+        <item>Superman</item>
+        <item>Barack Obama</item>
+        <item>Tintin</item>
+        <item>Rayman</item>
+        <item>Einstein</item>
+        <item>Alice au pays des merveilles</item>
+        <item>Jack Sparrow</item>
+        <item>Louis Vuitton</item>
+        <item>Alphonse Daudet</item>
+        <item>Casimir</item>
+        <item>Napoléon</item>
+        <item>Bugs Bunny</item>
+        <item>Johnny Halliday</item>
+        <item>Lucky Luke</item>
+        <item>Charlie Chaplin</item>
+        <item>La Joconde</item>
+        <item>Dark Vador</item>
+        <item>Le génie de la lampe</item>
+        <item>Haroun Tazieff</item>
+        <item>Schreck</item>
+        <item>La reine d\'Angleterre</item>
+        <item>Claude François</item>
+        <item>Gaston Lagaffe</item>
+        <item>Cindy Sanders</item>
+        <item>Zavatta</item>
+        <item>Lionel Messi</item>
+        <item>Agatha Christie</item>
+        <item>Hubert Reeves</item>
+        <item>Picasso</item>
+        <item>Steve Job</item>
+        <item>Louis de Funès</item>
+        <item>Mickey</item>
+        <item>Chantal Goya</item>
+        <item>Cousteau</item>
+        <item>Galilée</item>
+        <item>Un shadock</item>
+        <item>Chef indien</item>
+        <item>Harry Potter</item>
+        <item>Cyril Lignac</item>
+        <item>Archimède</item>
+        <item>L\'Abbé Pierre</item>
+        <item>Louis XIV</item>
+        <item>Céline Dion</item>
+        <item>Les frères Grimm</item>
+        <item>Cléopâtre</item>
+        <item>Mr Bean</item>
+        <item>Yannick Noah</item>
+        <item>Isaac Newton</item>
+        <item>Le Dalaï lama</item>
+        <item>Bisounours</item>
+        <item>Homer Simpson</item>
+        <item>Jean-Pierre Pernaut</item>
+        <item>Jules Verne</item>
+        <item>Gad Elmaleh</item>
+        <item>Dorothée</item>
+        <item>Mac Gyver</item>
+        <item>Mimi Mathy</item>
+        <item>Zinedine Zidane</item>
+        <item>Michael Jackson</item>
+        <item>Mime Marceau</item>
+        <item>Marilyn Monroe</item>
+
+
     </string-array>
 
     <!-- METIERS -->
     <string-array name="metiers">
-        <item name="metier_0">Policier</item>
-        <item name="metier_1">Pédiatre</item>
-        <item name="metier_2">Styliste</item>
-        <item name="metier_3">Maître-Nageur</item>
-        <item name="metier_4">Bibliothécaire</item>
+        <item>Architecte</item>
+        <item>Traducteur</item>
+        <item>Archéologue</item>
+        <item>Bûcheron</item>
+        <item>Boulanger</item>
+        <item>Ébéniste</item>
+        <item>Scientifique</item>
+        <item>Réparateur automobile</item>
+        <item>Styliste</item>
+        <item>Pédiatre</item>
+        <item>Géologue</item>
+        <item>Toiletteur</item>
+        <item>Professeur</item>
+        <item>Plombier</item>
+        <item>Coiffeur</item>
+        <item>Médecin</item>
+        <item>Maréchal ferrant</item>
+        <item>Berger</item>
+        <item>Infirmière</item>
+        <item>Agriculteur</item>
+        <item>Peintre</item>
+        <item>Caissière</item>
+        <item>Grutier</item>
+        <item>Avocat</item>
+        <item>Acteur</item>
+        <item>Footballeur</item>
+        <item>Reporter</item>
+        <item>Président</item>
+        <item>Éleveur de chiens</item>
+        <item>Informaticien</item>
+        <item>Cuisinier</item>
+        <item>Détective</item>
+        <item>Publiciste</item>
+        <item>Fleuriste</item>
+        <item>Océanologue</item>
+        <item>Dentiste</item>
+        <item>Nageur</item>
+        <item>Serrurier</item>
+        <item>Pharmacien</item>
+        <item>Garde forestier</item>
+        <item>Maître-nageur</item>
+        <item>Généticien</item>
+        <item>Livreur de pizza</item>
+        <item>Comptable</item>
+        <item>Moniteur de ski</item>
+        <item>Psychiatre</item>
+        <item>Journaliste</item>
+        <item>Vétérinaire</item>
+        <item>Boucher</item>
+        <item>Serveur ,Webmaster</item>
+        <item>Orthophoniste</item>
+        <item>Libraire</item>
+        <item>Réalisateur</item>
+        <item>Sapeur-pompier</item>
+        <item>Chanteur</item>
+        <item>Marionnettiste</item>
+        <item>Designer</item>
+        <item>Danseuse de ballet</item>
+        <item>Magicien</item>
+        <item>Photographe</item>
+        <item>Pêcheur</item>
+        <item>Barman</item>
+        <item>Dompteur</item>
+        <item>Éboueur</item>
+        <item>Chanteur d\'opéra</item>
+        <item>Chirurgien</item>
+        <item>Président de la république</item>
+        <item>Pilote d\'avion</item>
+        <item>Clown</item>
+        <item>Pick Pocket</item>
+        <item>Danseuse du ventre</item>
+        <item>Professeur de sport</item>
+        <item>Garagiste</item>
 
+
+    </string-array>
+
+    <!-- ACTIONS-->
+    <string-array name="actions">
+        <item>Regarder la télé</item>
+        <item>Mâcher un chewing-gum</item>
+        <item>Faire du surf</item>
+        <item>Fêter son anniversaire</item>
+        <item>Rencontrer un martien</item>
+        <item>Faire sauter une crêpe</item>
+        <item>Presser une orange</item>
+        <item>Faire la vaisselle</item>
+        <item>Courir un Marathon</item>
+        <item>Faire de la corde à sauter</item>
+        <item>Couper un gâteau</item>
+        <item>Marcher avec des échasses</item>
+        <item>Faire ses devoirs</item>
+        <item>Étendre du linge</item>
+        <item>Sauter à la corde</item>
+        <item>Tuer une araignée avec une bombe insecticide</item>
+        <item>Être lunatique</item>
+        <item>Faire la racaille</item>
+        <item>Jouer à Pokemon</item>
+        <item>Faire le clown</item>
+        <item>Tirer à l\'arc</item>
+        <item>Aller dans le train fantôme</item>
+        <item>Chercher ses clés</item>
+        <item>Courir après le bus</item>
+        <item>Sortir les poubelles</item>
+        <item>Faire des claquettes</item>
+        <item>Allumer le barbecue</item>
+        <item>Regarder la télé</item>
+        <item>Mâcher un chewing-gum</item>
+        <item>Traire une vache</item>
+        <item>Escalader une montagne</item>
+        <item>Se battre à l\'épée</item>
+        <item>Avoir la grippe</item>
+        <item>Téléphoner à mamie</item>
+        <item>Planter un arbre</item>
+        <item>Éplucher des patates</item>
+        <item>Aller à la piscine</item>
+        <item>Promener le chien</item>
+        <item>Jongler avec des pommes</item>
+        <item>Prendre l\'ascenseur</item>
+        <item>Se transformer en loup-garou</item>
+        <item>Lire du braille</item>
+        <item>Faire du patin à glace</item>
+        <item>Être malade en bateau</item>
+        <item>Explorer une grotte</item>
+        <item>Jouer du banjo</item>
+        <item>Faire un tour en montgolfière</item>
+        <item>Nouer sa cravate</item>
+        <item>Se faire cuire un œuf</item>
+        <item>Prendre l\'escalator</item>
+        <item>Faire sauter une crêpe</item>
+        <item>Presser une orange</item>
+        <item>Jouer avec un yoyo</item>
+        <item>Recevoir une médaille</item>
+        <item>Être blonde</item>
+        <item>Emballer une momie</item>
+        <item>Arriver en retard</item>
+        <item>Se préparer un café</item>
+        <item>Changer le bébé</item>
+        <item>Prendre un bain</item>
+        <item>Aller à la pêche</item>
+        <item>Faire de la trotinette</item>
+        <item>Prendre un médicament</item>
+        <item>Faire une course de haies</item>
+        <item>Prendre le train</item>
+        <item>Allumer un feu</item>
+        <item>Vendre un tapis</item>
+        <item>Manger une glace</item>
+        <item>Faire de la moto</item>
+        <item>Faire un câlin</item>
+        <item>Marcher sur des braise</item>
+        <item>Faire une galipette</item>
+        <item>Manger des spaghettis</item>
+        <item>Marcher dans le désert</item>
+        <item>Faire des crêpes</item>
+        <item>Danser la valse</item>
+        <item>Changer une couche</item>
+        <item>Faire de la boxe</item>
+        <item>Jouer au curling</item>
     </string-array>
 
 
