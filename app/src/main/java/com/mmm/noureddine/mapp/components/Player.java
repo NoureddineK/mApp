@@ -41,6 +41,10 @@ public class Player  implements Serializable {
         this.playerTeam = playerTeam;
         this.playerImage = image;
     }
+    public Player(String playerPseudo,String playerTeam) {
+        this.playerPseudo = playerPseudo;
+        this.playerTeam = playerTeam;
+    }
 
 
 

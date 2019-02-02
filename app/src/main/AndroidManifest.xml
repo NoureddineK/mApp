@@ -39,6 +39,7 @@
         </provider>
 
         <activity android:name=".activities.AsyncActivity" />
+        <activity android:name=".activities.ResultActivity"></activity>
     </application>
 
 </manifest>

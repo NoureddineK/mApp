@@ -50,7 +50,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.MyViewHo
         Player player = playerList.get(position);
         holder.itemNamePlayer.setText(player.getPlayerPseudo());
         holder.itemTeamPlayer.setText(player.getPlayerTeam());
-        holder.itemAvatarPlayer.setImageBitmap(DbBitmapUtility.getImage(player.getPlayerImage()));
+       // holder.itemAvatarPlayer.setImageBitmap(DbBitmapUtility.getImage(player.getPlayerImage()));
     }
 
     @Override

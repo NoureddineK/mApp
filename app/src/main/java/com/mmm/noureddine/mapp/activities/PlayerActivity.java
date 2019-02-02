@@ -31,6 +31,7 @@ import com.mmm.noureddine.mapp.utils.DbBitmapUtility;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -53,7 +54,7 @@ public class PlayerActivity extends AppCompatActivity {
     ImageView validate_players;
 
     private String namePlayer = "";
-    private String nameTeam ="";
+    private String nameTeam = "";
 
     private EditText player_name;
     Intent playerIntent;
@@ -78,12 +79,8 @@ public class PlayerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        try {
-            prepareData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        prepareData();
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -105,7 +102,7 @@ public class PlayerActivity extends AppCompatActivity {
         team_choice_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Toast.makeText(getBaseContext(), teamNameList.get(position)+ " Selected ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), teamNameList.get(position) + " Selected ", Toast.LENGTH_LONG).show();
                 nameTeam = teamNameList.get(position);
             }
 
@@ -141,8 +138,6 @@ public class PlayerActivity extends AppCompatActivity {
             }
 
         });
-
-
 
 
     }
@@ -181,28 +176,32 @@ public class PlayerActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void prepareData() throws Exception {
+    private void prepareData() {
 
 
+        //Get Teams from Data base to Spinner
         DBHandler db = new DBHandler(this);
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
-       // db.addPlayer(new Player("Player A", "Team A", DbBitmapUtility.getBytes(icon)));
-      //  db.addPlayer(new Player("Player B", "Team B", DbBitmapUtility.getBytes(icon)));
-      //  db.addPlayerToTeam("Player A", "Team A");
-       // db.addPlayerToTeam("Player B", "Team B");
-        List<Player> players = db.getAllPlayers();
-        for (Player player : players) {
-            playerList.add(player);
-        }
         List<Team> teamList = db.getAllTeams();
         for (Team team : teamList) {
             teamNameList.add(team.getName());
         }
-        mAdapter.notifyDataSetChanged();
+
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, teamNameList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         team_choice_spinner.setAdapter(adapter);
+
+
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
+        db.addPlayer(new Player("Player A", "Team A", DbBitmapUtility.getBytes(icon)));
+        db.addPlayer(new Player("Player B", "Team B", DbBitmapUtility.getBytes(icon)));
+
+        //db.updatePlayerTeam("Player A", "Team B");
+        List<Player> players = db.getAllPlayers();
+        for (Player player : players) {
+            playerList.add(player);
+        }
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -214,7 +213,7 @@ public class PlayerActivity extends AppCompatActivity {
             DBHandler db = new DBHandler(this);
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
             Player player;
-            player = new Player(name1,nameTeam,DbBitmapUtility.getBytes(icon));
+            player = new Player(name1, nameTeam, DbBitmapUtility.getBytes(icon));
             db.addPlayerToTeam(name1, nameTeam);
             db.addPlayer(player);
             playerList.add(player);
@@ -232,7 +231,7 @@ public class PlayerActivity extends AppCompatActivity {
     @OnClick(R.id.validate_players)
     public void validatePlayers(View v) {
         Intent intent = new Intent(getBaseContext(), Roll_DiceActivity.class);
-        intent.putExtra("topicName",topicName );
+        intent.putExtra("topicName", topicName);
         startActivityForResult(intent, 0);
     }
 
@@ -253,7 +252,7 @@ public class PlayerActivity extends AppCompatActivity {
                 db.updatePlayerImage(namePlayer, DbBitmapUtility.getBytes(myBitmap));
                 mAdapter.notifyDataSetChanged();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("onActivityResult", e.getMessage());
         }
 
@@ -282,7 +281,6 @@ public class PlayerActivity extends AppCompatActivity {
             playerList.remove(player);
             DBHandler db = new DBHandler(this);
             db.deletePlayer(player);
-            db.deleteJoinPlayer(player.getPlayerPseudo());
             mAdapter.notifyDataSetChanged();
         }
     }

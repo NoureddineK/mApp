@@ -9,76 +9,84 @@
     android:screenOrientation="portrait">
 
     <ImageView
-
         android:id="@+id/imageView1"
         android:layout_width="114dp"
         android:layout_height="111dp"
         android:layout_centerVertical="@id/roll_Dice_activity"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/dice_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/team_id"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/rollDices"
         android:layout_width="350dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="148dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/roll_dice"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+        app:layout_constraintTop_toBottomOf="@+id/player_id" />
 
     <TextView
         android:id="@+id/team_id"
-        android:layout_width="201dp"
+        android:layout_width="231dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Team"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="20dp"
+        android:textStyle="bold|italic"
+        android:gravity ="center"
         android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/player_id"
-        android:layout_width="203dp"
+        android:layout_width="229dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Player"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity ="center"
         android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/team_id" />
 
-    <Button
+    <TextView
         android:id="@+id/mime_id"
-        android:layout_width="348dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="350dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/holo_green_light"
+        android:maxLines="2"
         android:text="@string/start_mime"
+        android:textStyle="bold"
+        android:gravity ="center"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="@+id/rollDices"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="@+id/rollDices"
         app:layout_constraintTop_toBottomOf="@+id/rollDices" />
 
@@ -87,87 +95,160 @@
         android:layout_width="161dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/back"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restart_chrono"
-        android:background="@drawable/back"/>
+        app:layout_constraintTop_toBottomOf="@+id/chrono_cmd" />
 
-    <Button
-        android:id="@+id/start_chrono"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/chrono_cmd"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:text="Start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mime_id" />
-
-    <Button
-        android:id="@+id/stop_chrono"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Stop"
-        app:layout_constraintEnd_toStartOf="@+id/restart_chrono"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mime_id" />
-
-    <Button
-        android:id="@+id/restart_chrono"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="48dp"
-        android:text="Restart"
-        app:layout_constraintEnd_toStartOf="@+id/start_chrono"
-        app:layout_constraintTop_toTopOf="@+id/start_chrono" />
-
-    <ImageView
-        android:id="@+id/finger_good_view"
-        android:layout_width="110dp"
-        android:layout_height="94dp"
-        android:layout_marginStart="24dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:srcCompat="@drawable/finger_good" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/chronometer"
+        app:layout_constraintEnd_toEndOf="@+id/mime_id"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="@+id/mime_id"
+        app:layout_constraintTop_toBottomOf="@+id/mime_id">
 
-    <ImageView
-        android:id="@+id/finger_bad_view"
-        android:layout_width="102dp"
-        android:layout_height="95dp"
+        <Button
+            android:id="@+id/start_chrono"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Start"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/stop_chrono"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Stop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/restart_chrono"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/restart_chrono"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Restart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/start_chrono"
+            app:layout_constraintTop_toTopOf="@+id/start_chrono"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/finger_good_view"
+        android:layout_width="@dimen/finger_btn_size"
+        android:layout_height="@dimen/finger_btn_size"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        app:layout_constraintHorizontal_bias="0.82"
-        app:layout_constraintStart_toEndOf="@+id/finger_good_view"
-        app:layout_constraintTop_toTopOf="@+id/finger_good_view"
-        app:srcCompat="@drawable/finger_bad" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/finger_bad_view"
+        android:layout_width="@dimen/finger_btn_size"
+        android:layout_height="@dimen/finger_btn_size"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/finger_good_view" />
 
 
     <Button
         android:id="@+id/openWikiBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
+        android:layout_width="119dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@android:color/holo_orange_dark"
         android:onClick="openWiki"
-        android:text="Search..."
+        android:text="@string/google"
+        app:layout_constraintEnd_toStartOf="@+id/finger_bad_view"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toEndOf="@+id/finger_good_view"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/final_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finger_good_view"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/openWikiBtn"
+        app:layout_constraintVertical_bias="0.2">
 
+        <Button
+            android:id="@+id/next_palyerBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="@string/next_player"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/result_btn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/score"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/restart_btn"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/restart_btn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/new_game"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/next_palyerBtn"
+            app:layout_constraintTop_toTopOf="@+id/next_palyerBtn" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>

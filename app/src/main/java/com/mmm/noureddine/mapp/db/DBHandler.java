@@ -5,23 +5,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.mmm.noureddine.mapp.components.Join_Team_Player;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.components.Team;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 27;
     private static final String DATABASE_NAME = "letsmimeDB.db";
     private static final String TABLE_PLAYER = "Player";
     private static final String PLAYER_ID = "playerID";
     private static final String PLAYER_PSEUDO = "playerPseudo";
     private static final String PLAYER_TEAM = "playerTeam";
     private static final String PLAYER_IMAGE = "playerImage";
+    private static final String FKTEAM = "fk_team";
+
 
     private static final String TABLE_TEAM = "Team";
     private static final String TEAM_ID = "teamID";
@@ -40,16 +45,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE_PLAYER = "CREATE TABLE "
-                + TABLE_PLAYER + " ( "
-                + PLAYER_ID + " " +
-                "INTEGER PRIMARY KEY AUTOINCREMENT ,"
-                + PLAYER_PSEUDO + " TEXT UNIQUE  NOT NULL , "
-                + PLAYER_TEAM + " TEXT , "
-                + PLAYER_IMAGE + " BLOB " + " );";
-
-        db.execSQL(CREATE_TABLE_PLAYER);
-
 
         String CREATE_TABLE_TEAM = "CREATE TABLE "
                 + TABLE_TEAM + " ( "
@@ -58,7 +53,19 @@ public class DBHandler extends SQLiteOpenHelper {
                 + TEAM_NAME + " TEXT UNIQUE NOT NULL" + " );";
         db.execSQL(CREATE_TABLE_TEAM);
 
+        String CREATE_TABLE_PLAYER = "CREATE TABLE "
+                + TABLE_PLAYER
+                + " ( "
+                + PLAYER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + PLAYER_PSEUDO + " TEXT UNIQUE NOT NULL , "
+                + PLAYER_IMAGE + " BLOB, "
+                + PLAYER_TEAM + " INTEGER,  "
+                + " CONSTRAINT " + FKTEAM
+                + " FOREIGN KEY ( " + PLAYER_TEAM + ") "
+                + " REFERENCES " + TABLE_TEAM + "(" + TEAM_ID + ")"
+                + " );";
 
+        db.execSQL(CREATE_TABLE_PLAYER);
         String CREATE_TABLE_JOIN = "CREATE TABLE "
                 + TABLE_JOIN + " ( "
                 + JOIN_ID + " " +
@@ -97,9 +104,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addPlayer(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        // values.put(PLAYER_ID, player.getID()); // Player Name
         values.put(PLAYER_PSEUDO, player.getPlayerPseudo()); // Player Name
-        values.put(PLAYER_TEAM, player.getPlayerTeam());
+        values.put(PLAYER_TEAM, getTeamID(player.getPlayerTeam()));
         values.put(PLAYER_IMAGE, player.getPlayerImage());
         // Inserting Row
         db.insert(TABLE_PLAYER, null, values);
@@ -112,19 +118,17 @@ public class DBHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_PLAYER;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-// looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 Player player = new Player();
                 player.setID(Integer.parseInt(cursor.getString(0)));
                 player.setPlayerPseudo(cursor.getString(1));
-                player.setPlayerTeam(cursor.getString(2));
-                player.setPlayerImage(cursor.getBlob(3));
-// Adding contact to list
+                player.setPlayerImage(cursor.getBlob(2));
+                player.setPlayerTeam(getTeamName(Integer.parseInt(cursor.getString(3))));
+
                 playerList.add(player);
             } while (cursor.moveToNext());
         }
-// return contact list
         return playerList;
     }
 
@@ -168,11 +172,62 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public int getTeamID(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = " SELECT " + TEAM_ID + " FROM " + TABLE_TEAM + " WHERE " + TEAM_NAME + " = '" + name + "';";
+        Integer teamID = 0;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                teamID = Integer.parseInt(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return teamID;
+    }
+
+    public String getTeamName(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = " SELECT " + TEAM_NAME + " FROM " + TABLE_TEAM + " WHERE " + TEAM_ID + " = " + id + ";";
+        String name = "";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                name = cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return name;
+    }
+
+    public HashMap<String, List<Player>> getPresentPlayerTeams() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        HashMap<String, List<Player>> teamHashMap = new HashMap<>();
+        List<Player> players = getAllPlayers();
+
+        //Get Team used
+        List<String> teams = new ArrayList<>();
+        for (Player p : players) {
+            teams.add(p.getPlayerTeam());
+        }
+
+        for (String s : teams) {
+            List<Player> list = new ArrayList<>();
+            for (Player p : players) {
+                if (s.matches(p.getPlayerTeam())) {
+                    list.add(p);
+                }
+            }
+            teamHashMap.put(s, list);
+        }
+        return teamHashMap;
+    }
+
+
     public void updatePlayerTeam(String name, String team) {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        int id = getTeamID(team);
+        Log.d("updatePlayerTeam: ", String.valueOf(id));
         String update = "UPDATE " + TABLE_PLAYER + " SET " + PLAYER_TEAM
-                + " = '" + team + "' WHERE " + PLAYER_PSEUDO + " = '" + name + "';";
+                + " = '" + id + "' WHERE " + PLAYER_PSEUDO + " = '" + name + "';";
         db.execSQL(update);
         db.close();
     }
@@ -196,10 +251,21 @@ public class DBHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
-        Team contact = new Team(Integer.parseInt(cursor.getString(0)),
+        Team team = new Team(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1));
-// return shop
-        return contact;
+        return team;
+    }
+
+    public Team loadTeamByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TEAM,
+                new String[]{TEAM_ID, TEAM_NAME}, TEAM_NAME + "=?",
+                new String[]{name}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        Team team = new Team(Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1));
+        return team;
     }
 
 
@@ -321,7 +387,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> listPlayers = new ArrayList<>();
         String selectQuery = "SELECT " + JOIN_PLAYER + " FROM " + TABLE_JOIN
-               +" WHERE " + JOIN_TEAM + " = '" + team + "';";
+                + " WHERE " + JOIN_TEAM + " = '" + team + "';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

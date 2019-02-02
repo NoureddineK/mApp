@@ -1,8 +1,6 @@
 package com.mmm.noureddine.mapp.activities;
 
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -13,57 +11,53 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
-import com.mmm.noureddine.mapp.components.Join_Team_Player;
 import com.mmm.noureddine.mapp.components.Player;
-import com.mmm.noureddine.mapp.components.Team;
 import com.mmm.noureddine.mapp.db.DBHandler;
+import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Roll_DiceActivity extends AppCompatActivity {
     public static final Random RANDOM = new Random();
     private Button rollDices;
-    private ImageView imageView1;
+    private ImageView dices;
     private Chronometer chronometer;
     private Button start_chrono;
     private Button stop_chrono;
     private Button restart_chrono;
     private TextView team_id;
     private TextView player_id;
-    private ImageView finger_good_view;
-    private ImageView finger_bad_view;
-    private List<Player> playerList;
-    private List<Team> teamList;
-
+    private CircleImageView finger_good_view;
+    private CircleImageView finger_bad_view;
     private HashMap<String, List<String>> data;
     private List<String> listMime;
+    private TextView mime;
+    private Button next_palyerBtn;
+    private Button result_btn ;
+    private Button restart_btn;
 
-    private Button mime;
     private Boolean sessionEnd;
-    private int cptSession = 0;
-    private int cptTeam = 0;
     private int index = 0;
     private String topicName = "";
-    List<String> teams;
+    private int maxMime;
+    private int numPlayer = 0;
+    private int numTeam = 0;
+    private DBHandler db;
+    private HashMap<String, List<Player>> hash;
+    private List<String> teams;
     @Bind(R.id.openWikiBtn)
     Button openWikiB;
 
@@ -71,27 +65,7 @@ public class Roll_DiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roll__dice);
-
-        rollDices = (Button) findViewById(R.id.rollDices);
-        imageView1 = (ImageView) findViewById(R.id.imageView1);
-        chronometer = (Chronometer) findViewById(R.id.chronometer);
-        start_chrono = (Button) findViewById(R.id.start_chrono);
-        stop_chrono = (Button) findViewById(R.id.stop_chrono);
-        restart_chrono = (Button) findViewById(R.id.restart_chrono);
-        mime = (Button) findViewById(R.id.mime_id);
-        team_id = (TextView) findViewById(R.id.team_id);
-        player_id = (TextView) findViewById(R.id.player_id);
-        finger_good_view = (ImageView) findViewById(R.id.finger_good_view);
-        finger_bad_view = (ImageView) findViewById(R.id.finger_bad_view);
-        sessionEnd = false;
-        teams = getPlayersTeams();
-        topicName = getIntent().getStringExtra("topicName");
-        DBHandler db = new DBHandler(this);
-        playerList = db.getAllPlayers();
-        teamList = db.getAllTeams();
-        createDuck();
-        getPlayersTeams();
-        setSession(cptSession);
+        init();
         rollDices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,11 +73,10 @@ public class Roll_DiceActivity extends AppCompatActivity {
 
                 int res1 = getResources().getIdentifier("dice_" + value1, "drawable", "com.mmm.noureddine.mapp");
 
-                imageView1.setImageResource(res1);
+                dices.setImageResource(res1);
 
             }
         });
-
 
         chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -126,16 +99,15 @@ public class Roll_DiceActivity extends AppCompatActivity {
                     }
 */
                     // chronometer.setBase(SystemClock.elapsedRealtime());
+                    nextPlayer();
                     chronometer.stop();
-                    setSession(cptSession);
-                    cptTeam++;
-
                 }
             }
         });
         start_chrono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                generateNewMime();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
@@ -154,18 +126,14 @@ public class Roll_DiceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
-
+                generateNewMime();
             }
         });
 
-
-        mime.setOnClickListener(new View.OnClickListener() {
+        next_palyerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  mime.setText(data.get(topicName).get(generateInt(0, 4)));
-                generateNewMime();
-
-
+                nextPlayer();
             }
         });
 
@@ -173,20 +141,21 @@ public class Roll_DiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 generateNewMime();
-                //setSession(cptSession);
-
-
             }
         });
         finger_bad_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  mime.setText(data.get(topicName).get(generateInt(0, 4)));
                 generateNewMime();
-                //setSession(cptSession);
+
             }
         });
-
+        restart_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               finish();
+            }
+        });
 
     }
 
@@ -194,7 +163,7 @@ public class Roll_DiceActivity extends AppCompatActivity {
     public void openWiki(View v) {
         String escapedQuery = null;
         try {
-            if (!sessionEnd) {
+            if (!sessionEnd && !listMime.isEmpty()) {
                 escapedQuery = URLEncoder.encode(listMime.get(index - 1), "UTF-8");
                 Uri uri = Uri.parse("http://www.google.fr/#q=" + escapedQuery);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -208,61 +177,8 @@ public class Roll_DiceActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-
-      /*  Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://www.google.fr"));
-        startActivity(intent);*/
     }
 
-
-    public List<String> getPlayersTeams() {
-        HashSet<String> teamSet = new HashSet<>();
-        DBHandler db = new DBHandler(this);
-        List<Join_Team_Player> list = db.getJoin_Team_Player();
-        for (Join_Team_Player j : list) {
-            teamSet.add(j.getTeam());
-        }
-
-        List<String> teams = new ArrayList<String>();
-        teams.addAll(teamSet);
-        return teams;
-    }
-
-    private void setSession(int nb) {
-
-        int max = getMaxSession(teams);
-        if (nb < max) {
-            DBHandler db = new DBHandler(this);
-
-            String t = teams.get(cptTeam);
-            List<String> players = db.getJoin_Player(t);
-            if (players.size() > nb) {
-                Log.d("Jointure: jouer ", t + " / " + players.get(nb));
-                player_id.setText(players.get(nb));
-                team_id.setText(t);
-
-            }
-            cptSession++;
-        }
-        if (cptTeam == nb) {
-            cptTeam = 0;
-        }
-
-    }
-
-
-    private int getMaxSession(List<String> teams) {
-        int max = 0;
-        DBHandler db = new DBHandler(this);
-        for (String s : teams) {
-            List<String> players = db.getJoin_Player(s);
-            if (players.size() >= max)
-                max = players.size();
-        }
-        Log.d("Jointure: Max ", String.valueOf(max));
-        return max;
-    }
 
     private void startSession() {
 
@@ -277,16 +193,35 @@ public class Roll_DiceActivity extends AppCompatActivity {
 
 
     private void init() {
-
+        rollDices = (Button) findViewById(R.id.rollDices);
+        dices = (ImageView) findViewById(R.id.imageView1);
+        chronometer = (Chronometer) findViewById(R.id.chronometer);
+        start_chrono = (Button) findViewById(R.id.start_chrono);
+        stop_chrono = (Button) findViewById(R.id.stop_chrono);
+        restart_chrono = (Button) findViewById(R.id.restart_chrono);
+        mime = (TextView) findViewById(R.id.mime_id);
+        team_id = (TextView) findViewById(R.id.team_id);
+        player_id = (TextView) findViewById(R.id.player_id);
+        finger_good_view = (CircleImageView) findViewById(R.id.finger_good_view);
+        finger_bad_view = (CircleImageView) findViewById(R.id.finger_bad_view);
+        next_palyerBtn = (Button) findViewById(R.id.next_palyerBtn);
+        result_btn = (Button) findViewById(R.id.result_btn);
+        restart_btn = (Button) findViewById(R.id.restart_btn);
+        Picasso.get()
+                .load(R.drawable.finger_good)
+                .into(finger_good_view);
+        Picasso.get()
+                .load(R.drawable.finger_bad)
+                .into(finger_bad_view);
+        sessionEnd = false;
+        topicName = getIntent().getStringExtra("topicName");
+        db = new DBHandler(this);
+        hash = db.getPresentPlayerTeams();
+        teams = new ArrayList(hash.keySet());
+        createDuck();
+        nextPlayer();
 
     }
-
-    private List<String> getThemeList(String theme) {
-        if (data != null)
-            return data.get(theme);
-        return null;
-    }
-
 
     private void createDuck() {
         data = new HashMap<>();
@@ -320,6 +255,7 @@ public class Roll_DiceActivity extends AppCompatActivity {
         }
         Collections.shuffle(listMime);
         data.put(topicName, listMime);
+        maxMime = listMime.size();
     }
 
     private int generateInt(int min, int max) {
@@ -331,16 +267,29 @@ public class Roll_DiceActivity extends AppCompatActivity {
     }
 
     private void generateNewMime() {
-        if (index < 5) {
-            // int index = generateInt(0, 4);
-            // List<String> newList = data.get(topicName);
+        if (index < maxMime) {
             mime.setText(listMime.get(index));
-            //listMime.remove(index);
             index++;
         } else {
             mime.setText("Finish!");
             sessionEnd = true;
         }
+
+    }
+
+    private void nextPlayer() {
+        player_id.setText(hash.get(teams.get(numTeam)).get(numPlayer).getPlayerPseudo());
+        team_id.setText(teams.get(numTeam));
+        numTeam++;
+        if (numTeam >= teams.size()) {
+            numPlayer++;
+            numTeam = 0;
+            if (numPlayer >= hash.get(teams.get(numTeam)).size()) {
+                numPlayer = 0;
+            }
+
+        }
+
     }
 
 }

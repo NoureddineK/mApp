@@ -18,6 +18,8 @@
     <string name="metiers">Métiers</string>
 
     <string name="start_mime">Let\'s get started...</string>
-
-
+    <string name="next_player">Skip Your Turn</string>
+    <string name="google">Ask Google!</string>
+    <string name="score">See Scores</string>
+    <string name="new_game">Start a New Game</string>
 </resources>
