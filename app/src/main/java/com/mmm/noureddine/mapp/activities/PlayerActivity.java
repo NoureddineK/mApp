@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +32,6 @@ import com.mmm.noureddine.mapp.utils.DbBitmapUtility;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +81,9 @@ public class PlayerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                ((LinearLayoutManager) mLayoutManager).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         prepareData();
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -195,8 +197,8 @@ public class PlayerActivity extends AppCompatActivity {
 
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
-        db.addPlayer(new Player("Player A", "Team A", DbBitmapUtility.getBytes(icon)));
-        db.addPlayer(new Player("Player B", "Team B", DbBitmapUtility.getBytes(icon)));
+        db.addPlayer(new Player("Player A", DbBitmapUtility.getBytes(icon), "Team A"));
+        db.addPlayer(new Player("Player B", DbBitmapUtility.getBytes(icon), "Team B"));
 
         //db.updatePlayerTeam("Player A", "Team B");
         List<Player> players = db.getAllPlayers();
@@ -215,8 +217,8 @@ public class PlayerActivity extends AppCompatActivity {
             DBHandler db = new DBHandler(this);
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
             Player player;
-            player = new Player(name1, nameTeam, DbBitmapUtility.getBytes(icon));
-           // db.addPlayerToTeam(name1, nameTeam);
+            player = new Player(name1, DbBitmapUtility.getBytes(icon), nameTeam);
+            // db.addPlayerToTeam(name1, nameTeam);
             db.addPlayer(player);
             playerList.add(player);
             mAdapter.notifyDataSetChanged();
@@ -233,15 +235,15 @@ public class PlayerActivity extends AppCompatActivity {
     @OnClick(R.id.validate_players)
     public void validatePlayers(View v) {
         List<String> teamUsed = new ArrayList<>();
-        for (Player player : playerList){
-           teamUsed.add(player.getPlayerTeam());
+        for (Player player : playerList) {
+            teamUsed.add(player.getPlayerTeam());
         }
         Set set = new HashSet(teamUsed);
         if (playerList.size() < 2 || set.size() < 2) {
             Toast.makeText(getBaseContext(), "Please use at least two teams and two players", Toast.LENGTH_LONG).show();
 
         } else {
-            Intent intent = new Intent(getBaseContext(), Roll_DiceActivity.class);
+            Intent intent = new Intent(getBaseContext(), StartGameActivity.class);
             intent.putExtra("topicName", topicName);
             startActivityForResult(intent, 0);
         }

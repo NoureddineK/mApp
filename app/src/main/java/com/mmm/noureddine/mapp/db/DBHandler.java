@@ -7,19 +7,20 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.mmm.noureddine.mapp.components.Join_Team_Player;
-import com.mmm.noureddine.mapp.components.Player;
-import com.mmm.noureddine.mapp.components.Team;
+import com.mmm.noureddine.mapp.components.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 37;
     private static final String DATABASE_NAME = "letsmimeDB.db";
+
     private static final String TABLE_PLAYER = "Player";
     private static final String PLAYER_ID = "playerID";
     private static final String PLAYER_PSEUDO = "playerPseudo";
@@ -32,12 +33,16 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TEAM_ID = "teamID";
     private static final String TEAM_NAME = "teamName";
 
-    private static final String TABLE_RESULT ="Result";
+    private static final String TABLE_RESULT = "Result";
     private static final String RESULT_ID = "resultID";
     private static final String RESULT_PLAYER_ID = "resultPlayerID";
-   // private static final String
-
-
+    private static final String RESULT_TEAM_ID = "resultTeamID";
+    private static final String RESULT_LAT = "latitude";
+    private static final String RESULT_LONG = "longitude";
+    private static final String RESULT_DATE = "date";
+    private static final String RESULT_SCORE = "score";
+    private static final String FKPLAYER = "fk_player";
+    // private static final String
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,18 +65,41 @@ public class DBHandler extends SQLiteOpenHelper {
                 + PLAYER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
                 + PLAYER_PSEUDO + " TEXT UNIQUE NOT NULL , "
                 + PLAYER_IMAGE + " BLOB, "
-                + PLAYER_TEAM + " INTEGER,  "
+                + PLAYER_TEAM + " INTEGER NOT NULL,  "
                 + " CONSTRAINT " + FKTEAM
                 + " FOREIGN KEY ( " + PLAYER_TEAM + ") "
                 + " REFERENCES " + TABLE_TEAM + "(" + TEAM_ID + ")"
                 + " );";
-
         db.execSQL(CREATE_TABLE_PLAYER);
+
+
+        String CREATE_TABLE_RESULT = "CREATE TABLE "
+                + TABLE_RESULT
+                + " ( "
+                + RESULT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + RESULT_LAT + " LONG, "
+                + RESULT_LONG + " LONG, "
+                + RESULT_DATE + " TEXT, "
+                + RESULT_SCORE + " INTEGER,"
+                + RESULT_PLAYER_ID + " INTEGER NOT NULL,  "
+                + RESULT_TEAM_ID + " INTEGER NOT NULL,  "
+                + " CONSTRAINT " + FKPLAYER
+                + " FOREIGN KEY ( " + RESULT_PLAYER_ID + ") "
+                + " REFERENCES " + TABLE_PLAYER + "(" + PLAYER_ID + "), "
+
+                + " CONSTRAINT " + FKTEAM
+                + " FOREIGN KEY ( " + RESULT_TEAM_ID + ") "
+                + " REFERENCES " + TABLE_TEAM + "(" + TEAM_ID + ")"
+                + " );";
+
+        db.execSQL(CREATE_TABLE_RESULT);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESULT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAM);
         // Creating tables again
@@ -82,12 +110,15 @@ public class DBHandler extends SQLiteOpenHelper {
     public Player loadPlayer(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_PLAYER,
-                new String[]{PLAYER_ID, PLAYER_PSEUDO, PLAYER_TEAM, PLAYER_IMAGE}, PLAYER_ID + "=?",
+                new String[]{PLAYER_ID, PLAYER_PSEUDO, PLAYER_IMAGE, PLAYER_TEAM}, PLAYER_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
-        Player contact = new Player(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getBlob(3));
+        Player contact = new Player(
+                Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1),
+                cursor.getBlob(2),
+                cursor.getString(3));
 // return Player
         return contact;
     }
@@ -98,10 +129,51 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(PLAYER_PSEUDO, player.getPlayerPseudo()); // Player Name
         values.put(PLAYER_IMAGE, player.getPlayerImage());
-        values.put(PLAYER_TEAM, getTeamID(player.getPlayerTeam()));
+        values.put(PLAYER_TEAM, (player.getPlayerTeam()));
         // Inserting Row
         db.insert(TABLE_PLAYER, null, values);
         db.close(); // Closing database connection
+    }
+
+    public void addResult(double lat, double lon, String playerName, String teamName, int score) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+//DATE
+        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
+        shortDateFormat.format(new Date());
+
+        values.put(RESULT_LAT, lat);
+        values.put(RESULT_LONG, lon);
+        values.put(RESULT_DATE, shortDateFormat.format(new Date()));
+        values.put(RESULT_SCORE, score);
+        values.put(RESULT_PLAYER_ID, getPlayerID(playerName)); // Player Name
+        values.put(RESULT_TEAM_ID, getTeamID(teamName));
+
+        db.insert(TABLE_RESULT, null, values);
+        db.close(); // Closing database connection
+    }
+
+
+    public List<MapResult> getAllResult() {
+        List<MapResult> resultList = new ArrayList<MapResult>();
+// Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_RESULT;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                MapResult res = new MapResult();
+                res.setResultID(Integer.parseInt(cursor.getString(0)));
+                res.setLatitude(Double.parseDouble(cursor.getString(1)));
+                res.setLongitude(Double.parseDouble(cursor.getString(2)));
+                res.setDate(cursor.getString(3));
+                res.setScore(Integer.parseInt(cursor.getString(4)));
+                res.setPlayerName(getPlayerName(Integer.parseInt(cursor.getString(5))));
+                res.setTeamName(getTeamName(Integer.parseInt(cursor.getString(6))));
+                resultList.add(res);
+            } while (cursor.moveToNext());
+        }
+        return resultList;
     }
 
     public List<Player> getAllPlayers() {
@@ -116,13 +188,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 player.setID(Integer.parseInt(cursor.getString(0)));
                 player.setPlayerPseudo(cursor.getString(1));
                 player.setPlayerImage(cursor.getBlob(2));
-                player.setPlayerTeam(getTeamName(Integer.parseInt(cursor.getString(3))));
+                player.setPlayerTeam(cursor.getString(3));
 
                 playerList.add(player);
             } while (cursor.moveToNext());
         }
         return playerList;
     }
+
 
     // Getting players Count
     public int getPlayersCount() {
@@ -177,6 +250,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return teamID;
     }
 
+    public int getPlayerID(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = " SELECT " + PLAYER_ID + " FROM " + TABLE_PLAYER + " WHERE " + PLAYER_PSEUDO + " = '" + name + "';";
+        Integer playerID = 0;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                playerID = Integer.parseInt(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return playerID;
+    }
+
     public String getTeamName(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = " SELECT " + TEAM_NAME + " FROM " + TABLE_TEAM + " WHERE " + TEAM_ID + " = " + id + ";";
@@ -189,6 +275,20 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return name;
     }
+
+    public String getPlayerName(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = " SELECT " + PLAYER_PSEUDO + " FROM " + TABLE_PLAYER + " WHERE " + PLAYER_ID + " = " + id + ";";
+        String name = "";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                name = cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+        return name;
+    }
+
 
     public HashMap<String, List<Player>> getPresentPlayerTeams() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -320,96 +420,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    /*public List<Player> getTeamPlayers() {
-        List<Player> playerList = new ArrayList<Player>();
-// Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_JOIN;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-// looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                // Player player = new Player();
-                Player player = loadPlayer(Integer.parseInt(cursor.getString(0)));
-                //player.setID(Integer.parseInt(cursor.getString(0)));
-                //player.setPlayerPseudo(cursor.getString(1));
-                //player.setPlayerImage(cursor.getBlob(2));
-// Adding contact to list
-                playerList.add(player);
-            } while (cursor.moveToNext());
-        }
-// return contact list
-        return playerList;
-    }
-
-    public void addPlayerToTeam(String player, String team) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        // values.put(PLAYER_ID, player.getID()); // Player Name
-        values.put(JOIN_PLAYER, player); // Player Name
-        values.put(JOIN_TEAM, team);
-        // Inserting Row
-        db.insert(TABLE_JOIN, null, values);
-        db.close(); // Closing database connection
-    }
-
-
-    public List<Join_Team_Player> getJoin_Team_Player() {
-        List<Join_Team_Player> list = new ArrayList<Join_Team_Player>();
-// Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_JOIN;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-// looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Join_Team_Player join = new Join_Team_Player();
-                join.setTeam(cursor.getString(1));
-                join.setPlayer(cursor.getString(2));
-// Adding contact to list
-                list.add(join);
-            } while (cursor.moveToNext());
-        }
-// return contact list
-        return list;
-    }
-
-    public List<String> getJoin_Player(String team) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<String> listPlayers = new ArrayList<>();
-        String selectQuery = "SELECT " + JOIN_PLAYER + " FROM " + TABLE_JOIN
-                + " WHERE " + JOIN_TEAM + " = '" + team + "';";
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listPlayers.add(cursor.getString(0));
-
-            } while (cursor.moveToNext());
-        }
-        return listPlayers;
-    }
-
-
     // Deleting a Player
-    public void deleteJoinPlayer(String player) {
+    public void deleteResult(MapResult mapResult) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_JOIN, JOIN_PLAYER + " = ?",
-                new String[]{String.valueOf(player)});
+        db.delete(TABLE_RESULT, RESULT_ID + " = ?",
+                new String[]{String.valueOf(mapResult.getResultID())});
         db.close();
     }
-
-    public Player findHandler(String playerPseudo) {
-        return null;
-    }
-
-    public boolean deleteHandler(int playerID) {
-        return false;
-    }
-
-    public boolean updateHandler(int playerID, String playerPseudo) {
-        return false;
-    }*/
-
 }

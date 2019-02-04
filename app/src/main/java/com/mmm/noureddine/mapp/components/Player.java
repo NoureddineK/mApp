@@ -2,51 +2,29 @@ package com.mmm.noureddine.mapp.components;
 
 import java.io.Serializable;
 
-public class Player  implements Serializable {
+public class Player implements Serializable {
 
     private int playerID;
     private String playerPseudo;
-
-
-
     private String playerTeam;
     private byte[] playerImage;
+    private int score = 0;
 
     public Player() {
     }
 
-    public Player(int playerID, String playerPseudo) {
-        this.playerID = playerID;
-        this.playerPseudo = playerPseudo;
-    }
-
-    public Player(String playerPseudo) {
-        this.playerPseudo = playerPseudo;
-    }
-
-    public Player(int playerID, String playerPseudo,String playerTeam,  byte[] image) {
+    public Player(int playerID, String playerPseudo, byte[] image, String playerTeam) {
         this.playerID = playerID;
         this.playerPseudo = playerPseudo;
         this.playerImage = image;
         this.playerTeam = playerTeam;
     }
 
-    public Player(String playerPseudo, byte[] image) {
-        this.playerPseudo = playerPseudo;
-        this.playerImage = image;
-    }
-
-    public Player(String playerPseudo,String playerTeam,  byte[] image) {
+    public Player(String playerPseudo, byte[] image, String playerTeam) {
         this.playerPseudo = playerPseudo;
         this.playerTeam = playerTeam;
         this.playerImage = image;
     }
-    public Player(String playerPseudo,String playerTeam) {
-        this.playerPseudo = playerPseudo;
-        this.playerTeam = playerTeam;
-    }
-
-
 
     public void setID(int playerID) {
         this.playerID = playerID;
@@ -78,5 +56,17 @@ public class Player  implements Serializable {
 
     public void setPlayerTeam(String playerTeam) {
         this.playerTeam = playerTeam;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void incrementScore() {
+        this.score++;
     }
 }

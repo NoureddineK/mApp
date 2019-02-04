@@ -5,7 +5,7 @@
     android:id="@+id/roll_Dice_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Roll_DiceActivity"
+    tools:context=".activities.StartGameActivity"
     android:screenOrientation="portrait">
 
     <ImageView

@@ -41,7 +41,6 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.MyViewHo
     public PlayersAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.player_list_row, parent, false);
-
         return new PlayersAdapter.MyViewHolder(itemView);
     }
 
@@ -50,7 +49,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.MyViewHo
         Player player = playerList.get(position);
         holder.itemNamePlayer.setText(player.getPlayerPseudo());
         holder.itemTeamPlayer.setText(player.getPlayerTeam());
-       // holder.itemAvatarPlayer.setImageBitmap(DbBitmapUtility.getImage(player.getPlayerImage()));
+        holder.itemAvatarPlayer.setImageBitmap(DbBitmapUtility.getImage(player.getPlayerImage()));
     }
 
     @Override

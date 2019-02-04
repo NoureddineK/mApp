@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.Roll_DiceActivity"
+            android:name=".activities.StartGameActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.TeamActivity"
@@ -46,22 +46,19 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-
-
-
-
-
         </provider>
 
         <activity android:name=".activities.AsyncActivity" />
-        <activity android:name=".activities.ResultActivity"></activity>
+        <activity android:name=".activities.LocationActivity" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCyCDADMwCM7CsX_L2ma9dhPoB8Qp6vLYs" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activities.ResultActivity"></activity>
     </application>
 
 </manifest>

@@ -1,15 +1,18 @@
 package com.mmm.noureddine.mapp.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,11 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.Bind;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Roll_DiceActivity extends AppCompatActivity {
+public class StartGameActivity extends AppCompatActivity {
     public static final Random RANDOM = new Random();
     private Button rollDices;
     private ImageView dices;
@@ -64,10 +65,13 @@ public class Roll_DiceActivity extends AppCompatActivity {
 
     private Button openWikiBtn;
 
+    private LocationManager locationManager;
+    private Location locationGPS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_roll__dice);
+        setContentView(R.layout.activity_start_game);
         init();
         rollDices.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +137,7 @@ public class Roll_DiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 myCountDownTimer.onFinish();
-                //nextPlayer();
+
             }
         });
 
@@ -141,6 +145,14 @@ public class Roll_DiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 generateNewMime();
+
+                // RECUPERER LE BON JOUEUR ET SET LE SCORE
+
+                
+                    hash.get(teams.get(numTeam )).get(numPlayer).incrementScore();
+                    Log.d("Adding Result: ", (hash.get(teams.get(numTeam )).get(numPlayer).getPlayerPseudo()));
+
+
             }
         });
         finger_bad_view.setOnClickListener(new View.OnClickListener() {
@@ -160,11 +172,18 @@ public class Roll_DiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ResultActivity.class);
-                //intent.putExtra("topicName", topicName);
                 startActivityForResult(intent, 0);
             }
         });
 
+
+        locationManager = (LocationManager)
+                getSystemService(this.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getBaseContext(), "ACCESS_LOCATION DENIED", Toast.LENGTH_LONG).show();
+
+        }
+        locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
     }
 
@@ -275,6 +294,20 @@ public class Roll_DiceActivity extends AppCompatActivity {
             next_palyerBtn.setEnabled(false);
             rollDices.setEnabled(false);
             myCountDownTimer.onFinish();
+
+            for (int i = 0; i < teams.size(); i++) {
+                for (Player p : hash.get(teams.get(i))) {
+                    Log.d("Adding Result: ", locationGPS.getAltitude() + " / "
+                            + locationGPS.getLongitude() + " / " + p.getPlayerPseudo()
+                            + " / " + p.getPlayerTeam() + " / " + p.getScore());
+
+                    db.addResult(locationGPS.getAltitude(), locationGPS.getLongitude(),
+                            p.getPlayerPseudo(), p.getPlayerTeam(), p.getScore());
+
+
+                }
+
+            }
         }
 
     }

@@ -10,8 +10,8 @@
     android:focusable="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/row_padding_vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/row_padding_vertical"
+    android:paddingRight="@dimen/row_padding_vertical"
     android:paddingTop="@dimen/row_padding_vertical">
 
     <TextView
@@ -22,8 +22,6 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_toStartOf="@id/parentLayout"
         android:textColor="@color/title"
         android:textSize="16dp"
@@ -41,10 +39,6 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_toRightOf="@id/itemNamePlayer"
         android:textColor="@android:color/darker_gray"
         android:textSize="16dp"

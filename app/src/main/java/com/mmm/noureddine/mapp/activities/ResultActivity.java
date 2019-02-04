@@ -1,60 +1,115 @@
 package com.mmm.noureddine.mapp.activities;
 
-import android.os.CountDownTimer;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.mmm.noureddine.mapp.adapter.ResultAdapter;
+import com.mmm.noureddine.mapp.adapter.TeamsAdapter;
+import com.mmm.noureddine.mapp.components.MapResult;
+import com.mmm.noureddine.mapp.components.RecyclerItemClickListener;
+import com.mmm.noureddine.mapp.components.Team;
+import com.mmm.noureddine.mapp.db.DBHandler;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ResultActivity extends AppCompatActivity
-        implements OnMapReadyCallback {
+public class ResultActivity extends AppCompatActivity {
+    private DBHandler db;
+    private List<MapResult> mapResultList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ResultAdapter mAdapter;
+    private Button map_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_result);
-        // Get the SupportMapFragment and request notification
-        // when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        db = new DBHandler(this);
+
+        map_btn = (Button) findViewById(R.id.map_btn);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_res);
+        try {
+            prepareTeamData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mAdapter = new ResultAdapter(mapResultList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                ((LinearLayoutManager) mLayoutManager).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        //  int itemPosition = recyclerView.getChildLayoutPosition(view);
+                        MapResult item = mapResultList.get(position);
+                        Toast.makeText(getBaseContext(), item.getTeamName() + " Selected ", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        MapResult item = mapResultList.get(position);
+                        mapResultList.remove(item);
+                        db.deleteResult(item);
+                        Toast.makeText(getBaseContext(), item.getPlayerName() + " Deleted", Toast.LENGTH_LONG).show();
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+        );
+
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), LocationActivity.class);
+                //intent.putExtra("topicName", topicName);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+
     }
 
-    /**
-     * Manipulates the map when it's available.
-     * The API invokes this callback when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user receives a prompt to install
-     * Play services inside the SupportMapFragment. The API invokes this method after the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        LatLng rennes = new LatLng(48.117266,-1.6777926);
 
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.addMarker(new MarkerOptions().position(rennes)
-                .title("Marker in Rennes"));
+    private void prepareTeamData() throws Exception {
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(rennes));
+        Log.d("Insert: ", "Inserting ..");
+        LocationManager locationManager = (LocationManager)
+                getSystemService(this.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getBaseContext(), "ACCESS_LOCATION DENIED", Toast.LENGTH_LONG).show();
+
+        }
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // db.addResult(locationGPS.getAltitude(), locationGPS.getLongitude(), "Player B", "Team K", 10);
+
+        List<MapResult> results = db.getAllResult();
+        for (MapResult res : results) {
+            mapResultList.add(res);
+            Log.d("resultats: ", res.toString());
+        }
+        mAdapter.notifyDataSetChanged();
     }
+
+
 }

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
    /* @OnClick(R.id.rollDices)
     public void lancherRollActivity(View v) {
-        Intent intent = new Intent(this, Roll_DiceActivity.class);
+        Intent intent = new Intent(this, StartGameActivity.class);
         startActivity(intent);
     }
 
