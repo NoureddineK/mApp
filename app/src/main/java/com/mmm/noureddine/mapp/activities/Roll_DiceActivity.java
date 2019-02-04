@@ -132,7 +132,8 @@ public class Roll_DiceActivity extends AppCompatActivity {
         next_palyerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nextPlayer();
+                myCountDownTimer.onFinish();
+                //nextPlayer();
             }
         });
 
@@ -309,13 +310,12 @@ public class Roll_DiceActivity extends AppCompatActivity {
         @Override
         public void onFinish() {
             this.cancel();
-            // textCounter.setText("Task completed");
             progressBar.setProgress(100);
             start_chrono.setEnabled(true);
             finger_bad_view.setEnabled(false);
             finger_good_view.setEnabled(false);
             nextPlayer();
-            if(sessionEnd){
+            if (sessionEnd) {
                 start_chrono.setEnabled(false);
             }
 

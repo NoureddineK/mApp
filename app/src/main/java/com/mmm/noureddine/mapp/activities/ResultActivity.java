@@ -9,57 +9,52 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mmm.noureddine.mapp.R;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class ResultActivity extends AppCompatActivity {
-    /*Button buttonStart;
-    ProgressBar progressBar;
-    TextView textCounter;
-    MyCountDownTimer myCountDownTimer;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class ResultActivity extends AppCompatActivity
+        implements OnMapReadyCallback {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_result);
-        buttonStart = (Button)findViewById(R.id.start);
-        progressBar = (ProgressBar)findViewById(R.id.progressbar);
-        textCounter = (TextView)findViewById(R.id.counter);
-
-        buttonStart.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                progressBar.setProgress(0);
-                myCountDownTimer = new MyCountDownTimer(30000, 1500);
-                myCountDownTimer.start();
-                buttonStart.setEnabled(false);
-            }});
-
+        // Get the SupportMapFragment and request notification
+        // when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
-    public class MyCountDownTimer extends CountDownTimer {
+    /**
+     * Manipulates the map when it's available.
+     * The API invokes this callback when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user receives a prompt to install
+     * Play services inside the SupportMapFragment. The API invokes this method after the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Add a marker in Sydney, Australia,
+        // and move the map's camera to the same location.
+        LatLng sydney = new LatLng(-33.852, 151.211);
+        LatLng rennes = new LatLng(48.117266,-1.6777926);
 
-        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
+        googleMap.addMarker(new MarkerOptions().position(sydney)
+                .title("Marker in Sydney"));
+        googleMap.addMarker(new MarkerOptions().position(rennes)
+                .title("Marker in Rennes"));
 
-        @Override
-        public void onTick(long millisUntilFinished) {
-            if(millisUntilFinished > 10000){
-                textCounter.setText(String.valueOf(millisUntilFinished).substring(0,2));
-            }
-            else {
-                textCounter.setText(String.valueOf(millisUntilFinished).substring(0,1));
-
-            }
-            int progress = (int) (millisUntilFinished/300);
-            progressBar.setProgress(progress);
-        }
-
-        @Override
-        public void onFinish() {
-            textCounter.setText("Task completed");
-            progressBar.setProgress(100);
-            buttonStart.setEnabled(true);
-        }
-
-    }*/
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(rennes));
+    }
 }

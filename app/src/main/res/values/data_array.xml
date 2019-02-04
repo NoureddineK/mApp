@@ -13,7 +13,6 @@
         <item>Actions</item>
     </string-array>
 
-
     <!-- FILMS -->
     <string-array name="films">
         <item>Avengers</item>
@@ -70,7 +69,7 @@
         <item>L’été de mes 11 ans</item>
         <item>Le médaillon</item>
         <item>Peter Pan</item>
-        <item>Le train sifflera trois fois TABLEAU 12</item>
+        <item>Le train sifflera trois fois</item>
         <item>Une bouteille à la mer</item>
         <item>Platoon</item>
         <item>Mon fantôme d’amour</item>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "460149083180",
+    "firebase_url": "https://mapp-88225.firebaseio.com",
+    "project_id": "mapp-88225",
+    "storage_bucket": "mapp-88225.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460149083180:android:13dfb9661d00e6a0",
+        "android_client_info": {
+          "package_name": "com.mmm.noureddine.mapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460149083180-v1ks4ut9g74q7pn5fnoeg19j8jolgi8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyCDADMwCM7CsX_L2ma9dhPoB8Qp6vLYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

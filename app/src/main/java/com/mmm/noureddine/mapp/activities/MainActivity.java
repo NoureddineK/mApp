@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     // @Bind(R.id.start_game)
   //  ImageView start_game;
     CircleImageView start_game;
-
  /*   @Bind(R.id.rollDices)
     Button recycleB;
 

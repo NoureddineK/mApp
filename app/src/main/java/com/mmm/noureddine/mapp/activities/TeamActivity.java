@@ -76,7 +76,7 @@ public class TeamActivity extends AppCompatActivity {
                     public void onLongItemClick(View view, int position) {
                         Team item = teamList.get(position);
                         removeTeam(item);
-                        Toast.makeText(getBaseContext(), item.getName()+ " Deleted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), item.getName() + " Deleted", Toast.LENGTH_LONG).show();
                     }
                 })
         );
@@ -104,8 +104,13 @@ public class TeamActivity extends AppCompatActivity {
 
     @OnClick(R.id.validate_teams)
     public void validateTeams(View v) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-        startActivity(intent);
+        if (teamList.size() < 2) {
+            Toast.makeText(getBaseContext(), "Please introduce at least two teams!", Toast.LENGTH_LONG).show();
+
+        } else {
+            Intent intent = new Intent(this, PlayerActivity.class);
+            startActivity(intent);
+        }
     }
 
 

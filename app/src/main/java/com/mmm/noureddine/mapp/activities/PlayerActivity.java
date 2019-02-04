@@ -32,7 +32,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -214,7 +216,7 @@ public class PlayerActivity extends AppCompatActivity {
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
             Player player;
             player = new Player(name1, nameTeam, DbBitmapUtility.getBytes(icon));
-            db.addPlayerToTeam(name1, nameTeam);
+           // db.addPlayerToTeam(name1, nameTeam);
             db.addPlayer(player);
             playerList.add(player);
             mAdapter.notifyDataSetChanged();
@@ -230,9 +232,19 @@ public class PlayerActivity extends AppCompatActivity {
 
     @OnClick(R.id.validate_players)
     public void validatePlayers(View v) {
-        Intent intent = new Intent(getBaseContext(), Roll_DiceActivity.class);
-        intent.putExtra("topicName", topicName);
-        startActivityForResult(intent, 0);
+        List<String> teamUsed = new ArrayList<>();
+        for (Player player : playerList){
+           teamUsed.add(player.getPlayerTeam());
+        }
+        Set set = new HashSet(teamUsed);
+        if (playerList.size() < 2 || set.size() < 2) {
+            Toast.makeText(getBaseContext(), "Please use at least two teams and two players", Toast.LENGTH_LONG).show();
+
+        } else {
+            Intent intent = new Intent(getBaseContext(), Roll_DiceActivity.class);
+            intent.putExtra("topicName", topicName);
+            startActivityForResult(intent, 0);
+        }
     }
 
 

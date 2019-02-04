@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
     private static final String DATABASE_NAME = "letsmimeDB.db";
     private static final String TABLE_PLAYER = "Player";
     private static final String PLAYER_ID = "playerID";
@@ -32,10 +32,11 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TEAM_ID = "teamID";
     private static final String TEAM_NAME = "teamName";
 
-    private static final String TABLE_JOIN = "TeamPlayer";
-    private static final String JOIN_ID = "joinID";
-    private static final String JOIN_PLAYER = "joinPlayer";
-    private static final String JOIN_TEAM = "joinTeam";
+    private static final String TABLE_RESULT ="Result";
+    private static final String RESULT_ID = "resultID";
+    private static final String RESULT_PLAYER_ID = "resultPlayerID";
+   // private static final String
+
 
 
     public DBHandler(Context context) {
@@ -66,14 +67,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 + " );";
 
         db.execSQL(CREATE_TABLE_PLAYER);
-        String CREATE_TABLE_JOIN = "CREATE TABLE "
-                + TABLE_JOIN + " ( "
-                + JOIN_ID + " " +
-                "INTEGER PRIMARY KEY AUTOINCREMENT ,"
-                + JOIN_TEAM + " TEXT NOT NULL ,"
-                + JOIN_PLAYER + " TEXT NOT NULL"
-                + " );";
-        db.execSQL(CREATE_TABLE_JOIN);
     }
 
     @Override
@@ -81,7 +74,6 @@ public class DBHandler extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAM);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_JOIN);
         // Creating tables again
         onCreate(db);
     }
@@ -105,8 +97,8 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PLAYER_PSEUDO, player.getPlayerPseudo()); // Player Name
-        values.put(PLAYER_TEAM, getTeamID(player.getPlayerTeam()));
         values.put(PLAYER_IMAGE, player.getPlayerImage());
+        values.put(PLAYER_TEAM, getTeamID(player.getPlayerTeam()));
         // Inserting Row
         db.insert(TABLE_PLAYER, null, values);
         db.close(); // Closing database connection
@@ -329,7 +321,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
-    public List<Player> getTeamPlayers() {
+    /*public List<Player> getTeamPlayers() {
         List<Player> playerList = new ArrayList<Player>();
 // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_JOIN;
@@ -418,6 +410,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public boolean updateHandler(int playerID, String playerPseudo) {
         return false;
-    }
+    }*/
 
 }
