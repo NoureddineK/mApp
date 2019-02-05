@@ -81,7 +81,6 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), LocationActivity.class);
-                //intent.putExtra("topicName", topicName);
                 startActivityForResult(intent, 0);
             }
         });
@@ -93,16 +92,6 @@ public class ResultActivity extends AppCompatActivity {
     private void prepareTeamData() throws Exception {
 
         Log.d("Insert: ", "Inserting ..");
-        LocationManager locationManager = (LocationManager)
-                getSystemService(this.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getBaseContext(), "ACCESS_LOCATION DENIED", Toast.LENGTH_LONG).show();
-
-        }
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        // db.addResult(locationGPS.getAltitude(), locationGPS.getLongitude(), "Player B", "Team K", 10);
-
         List<MapResult> results = db.getAllResult();
         for (MapResult res : results) {
             mapResultList.add(res);

@@ -1,9 +1,11 @@
 package com.mmm.noureddine.mapp.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
@@ -19,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
-import com.mmm.noureddine.mapp.components.GpsTracker;
+import com.mmm.noureddine.mapp.components.ProviderLocationTracker;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.squareup.picasso.Picasso;
@@ -53,7 +55,6 @@ public class StartGameActivity extends AppCompatActivity {
     private Button restart_btn;
     private ProgressBar progressBar;
     private MyCountDownTimer myCountDownTimer;
-
     private Boolean sessionEnd;
     private int index = 0;
     private String topicName = "";
@@ -65,10 +66,6 @@ public class StartGameActivity extends AppCompatActivity {
     private List<String> teams;
 
     private Button openWikiBtn;
-
-    private LocationManager locationManager;
-    private Location locationGPS;
-    GpsTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +79,6 @@ public class StartGameActivity extends AppCompatActivity {
                 int res1 = getResources().getIdentifier("dice_" + value1, "drawable",
                         "com.mmm.noureddine.mapp");
                 dices.setImageResource(res1);
-
             }
         });
 
@@ -147,13 +143,8 @@ public class StartGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 generateNewMime();
-
-                // RECUPERER LE BON JOUEUR ET SET LE SCORE
-
+                //TODO GET RIGHT PLAYER NAMES
                 hash.get(teams.get(numTeam)).get(numPlayer).incrementScore();
-                Log.d("Adding Result: ", (hash.get(teams.get(numTeam)).get(numPlayer).getPlayerPseudo()));
-
-
             }
         });
         finger_bad_view.setOnClickListener(new View.OnClickListener() {
@@ -176,15 +167,6 @@ public class StartGameActivity extends AppCompatActivity {
                 startActivityForResult(intent, 0);
             }
         });
-
-
-        locationManager = (LocationManager)
-                getSystemService(this.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getBaseContext(), "ACCESS_LOCATION DENIED", Toast.LENGTH_LONG).show();
-
-        }
-        locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
     }
 
@@ -232,7 +214,7 @@ public class StartGameActivity extends AppCompatActivity {
         teams = new ArrayList(hash.keySet());
         createDuck();
         nextPlayer();
-        gpsTracker = new GpsTracker(this);
+
     }
 
     private void createDuck() {
@@ -296,17 +278,27 @@ public class StartGameActivity extends AppCompatActivity {
             rollDices.setEnabled(false);
             myCountDownTimer.onFinish();
 
+            LocationManager locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
             for (int i = 0; i < teams.size(); i++) {
                 for (Player p : hash.get(teams.get(i))) {
-                    Log.d("Adding Result: ", gpsTracker.getLatitude() + " / "
-                            + gpsTracker.getLongitude() + " / " + p.getPlayerPseudo()
+                    Log.d("Adding Result: ", locationGPS.getLatitude() + " / "
+                            + locationGPS.getLongitude() + " / " + p.getPlayerPseudo()
                             + " / " + p.getPlayerTeam() + " / " + p.getScore());
 
-                    db.addResult(gpsTracker.getLatitude(), gpsTracker.getLongitude(),
+                    db.addResult(locationGPS.getLatitude(), locationGPS.getLongitude(),
                             p.getPlayerPseudo(), p.getPlayerTeam(), p.getScore());
+
                 }
             }
         }
+
     }
 
     private void nextPlayer() {

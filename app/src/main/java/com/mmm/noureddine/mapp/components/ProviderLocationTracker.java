@@ -16,7 +16,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-public class GpsTracker extends Service implements LocationListener {
+public class ProviderLocationTracker extends Service implements LocationListener {
 
     private final Context mContext;
 
@@ -42,7 +42,7 @@ public class GpsTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GpsTracker(Context context) {
+    public ProviderLocationTracker(Context context) {
         this.mContext = context;
         getLocation();
     }
@@ -118,7 +118,7 @@ public class GpsTracker extends Service implements LocationListener {
      */
     public void stopUsingGPS() {
         if (locationManager != null) {
-            locationManager.removeUpdates(GpsTracker.this);
+            locationManager.removeUpdates(ProviderLocationTracker.this);
         }
     }
 

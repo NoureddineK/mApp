@@ -6,11 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
-
 import com.mmm.noureddine.mapp.components.*;
-
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +15,7 @@ import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 37;
+    private static final int DATABASE_VERSION = 42;
     private static final String DATABASE_NAME = "letsmimeDB.db";
 
     private static final String TABLE_PLAYER = "Player";
@@ -236,6 +233,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(update);
         db.close();
     }
+
 
     public int getTeamID(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
