@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.gms.location.LocationRequest;
 import com.mmm.noureddine.mapp.R;
 
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mmm.noureddine.mapp.components.GpsTracker;
+import com.mmm.noureddine.mapp.components.MapResult;
 import com.mmm.noureddine.mapp.db.DBHandler;
 
 import java.io.IOException;
@@ -37,6 +40,11 @@ public class LocationActivity extends AppCompatActivity
     private SupportMapFragment mapFragment;
     private GoogleMap googleMap;
     private LocationManager locationManager;
+    // The minimum distance to change Updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,87 +92,50 @@ public class LocationActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleM) {
-        googleMap = googleM;
+        if (googleM == null) {
+            Toast.makeText(getApplicationContext(),
+                    "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+                    .show();
+            finish();
+        } else {
+            googleMap = googleM;
+            // and move the map's camera to the same location.
 
-     /*   LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location loc) {
-                // editLocation.setText("");
-                // pb.setVisibility(View.INVISIBLE);
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            Toast.makeText(
+                    getBaseContext(), "Alt: " + locationGPS.getAltitude() + " / Long: " + locationGPS.getLongitude(), Toast.LENGTH_SHORT).show();
+
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude()), 16));
+
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
                 Toast.makeText(
-                        getBaseContext(),
-                        "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                                + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-                String longitude = "Longitude: " + loc.getLongitude();
-                Log.v("Latitude: ", longitude);
-                String latitude = "Latitude: " + loc.getLatitude();
-                Log.v("latitude: ", latitude);
+                        getBaseContext(), "ACCESS LOCATION DENIED", Toast.LENGTH_SHORT).show();
 
-                //------- To get city name from coordinates --------
-                String cityName = null;
-                Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = gcd.getFromLocation(loc.getLatitude(),
-                            loc.getLongitude(), 1);
-                    if (addresses.size() > 0) {
-                        System.out.println(addresses.get(0).getLocality());
-                        cityName = addresses.get(0).getLocality();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String s = longitude + "\n" + latitude + "\n\n My Current City is: "
-                        + cityName;
-                Log.d("My Current City is: ", s);
-                // editLocation.setText(s);
+                return;
             }
+            googleMap.setMyLocationEnabled(true);
+            googleMap.setTrafficEnabled(true);
+            googleMap.setIndoorEnabled(true);
+            googleMap.setBuildingsEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };*/
-        // and move the map's camera to the same location.
-       // createMarker(48.117266, -1.6777926, "Rennes", "Bretagne");
-       // createMarker(-33.852, 151.211, "Sydney", "Australie");
-       // createMarker(48.8534, 2.3488, "Paris", "Ici c'est Paris!");
-        LatLng rennes = new LatLng(48.117266, -1.6777926);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            createMarker(48.117266, -1.6777926, "Rennes", "Bretagne");
+            // createMarker(-33.852, 151.211, "Sydney", "Australie");
+            createMarker(48.8534, 2.3488, "Paris", "Ici c'est Paris!");
+            locationDB();
         }
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-
-        createMarker(locationGPS.getAltitude(), locationGPS.getLongitude(), "MonTel", "Iam Here!");
-        Toast.makeText(
-                getBaseContext(), "Alt: "+locationGPS.getAltitude() + " / Long: "+ locationGPS.getLongitude(), Toast.LENGTH_SHORT).show();
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(rennes));
-        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setTrafficEnabled(true);
-        googleMap.setIndoorEnabled(true);
-        googleMap.setBuildingsEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     private void createMarker(double latitude, double longitude, String title, String snippet) {
@@ -175,11 +146,24 @@ public class LocationActivity extends AppCompatActivity
                 .snippet(snippet));
     }
 
-    private void locationDB(){
+    private void locationDB() {
         DBHandler db = new DBHandler(this);
+        GpsTracker gpsTracker = new GpsTracker(this);
 
-        db.addResult(-33.852, 151.211, "Player A", "Team A", 5);
-        createMarker(-33.852, 151.211, "Sydney", "Player A");
+        db.addResult(gpsTracker.getLatitude(), gpsTracker.getLongitude(),
+                "Player A", "Team B", 250);
+        List<MapResult> listMap = db.getAllResult();
+        if (listMap.size() > 0) {
+            for (MapResult p : listMap) {
+                Log.d("locationDB:", p.toString());
+                double lat = p.getLatitude();
+                double lon = p.getLongitude();
+                createMarker(lat, lon, p.getTeamName(), String.valueOf(p.getScore()));
+            }
+        } else {
+            Toast.makeText(
+                    getBaseContext(), "No Scores to Show!", Toast.LENGTH_SHORT).show();
+        }
 
 
     }

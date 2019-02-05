@@ -7,6 +7,9 @@ public class MapResult {
     private double latitude;
     private double longitude;
     private String date;
+
+
+
     private String teamName;
     private int score;
 
@@ -99,5 +102,16 @@ public class MapResult {
         this.score = score;
     }
 
-
+    @Override
+    public String toString() {
+        return "MapResult{" +
+                "resultID=" + resultID +
+                ", playerName='" + playerName + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", date='" + date + '\'' +
+                ", teamName='" + teamName + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }

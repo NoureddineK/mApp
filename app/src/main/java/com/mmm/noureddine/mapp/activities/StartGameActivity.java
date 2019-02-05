@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
+import com.mmm.noureddine.mapp.components.GpsTracker;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.squareup.picasso.Picasso;
@@ -67,6 +68,7 @@ public class StartGameActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
     private Location locationGPS;
+    GpsTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +150,8 @@ public class StartGameActivity extends AppCompatActivity {
 
                 // RECUPERER LE BON JOUEUR ET SET LE SCORE
 
-                
-                    hash.get(teams.get(numTeam )).get(numPlayer).incrementScore();
-                    Log.d("Adding Result: ", (hash.get(teams.get(numTeam )).get(numPlayer).getPlayerPseudo()));
+                hash.get(teams.get(numTeam)).get(numPlayer).incrementScore();
+                Log.d("Adding Result: ", (hash.get(teams.get(numTeam)).get(numPlayer).getPlayerPseudo()));
 
 
             }
@@ -231,7 +232,7 @@ public class StartGameActivity extends AppCompatActivity {
         teams = new ArrayList(hash.keySet());
         createDuck();
         nextPlayer();
-
+        gpsTracker = new GpsTracker(this);
     }
 
     private void createDuck() {
@@ -297,19 +298,15 @@ public class StartGameActivity extends AppCompatActivity {
 
             for (int i = 0; i < teams.size(); i++) {
                 for (Player p : hash.get(teams.get(i))) {
-                    Log.d("Adding Result: ", locationGPS.getAltitude() + " / "
-                            + locationGPS.getLongitude() + " / " + p.getPlayerPseudo()
+                    Log.d("Adding Result: ", gpsTracker.getLatitude() + " / "
+                            + gpsTracker.getLongitude() + " / " + p.getPlayerPseudo()
                             + " / " + p.getPlayerTeam() + " / " + p.getScore());
 
-                    db.addResult(locationGPS.getAltitude(), locationGPS.getLongitude(),
+                    db.addResult(gpsTracker.getLatitude(), gpsTracker.getLongitude(),
                             p.getPlayerPseudo(), p.getPlayerTeam(), p.getScore());
-
-
                 }
-
             }
         }
-
     }
 
     private void nextPlayer() {
