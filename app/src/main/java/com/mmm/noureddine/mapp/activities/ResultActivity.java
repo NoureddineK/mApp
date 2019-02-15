@@ -1,11 +1,6 @@
 package com.mmm.noureddine.mapp.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,15 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
 import com.mmm.noureddine.mapp.adapter.ResultAdapter;
-import com.mmm.noureddine.mapp.adapter.TeamsAdapter;
 import com.mmm.noureddine.mapp.components.MapResult;
 import com.mmm.noureddine.mapp.components.RecyclerItemClickListener;
-import com.mmm.noureddine.mapp.components.Team;
 import com.mmm.noureddine.mapp.db.DBHandler;
 
 import java.util.ArrayList;
@@ -45,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
         map_btn = (Button) findViewById(R.id.map_btn);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_res);
         try {
-            prepareTeamData();
+            prepareResultData();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,7 +53,6 @@ public class ResultActivity extends AppCompatActivity {
                 new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        //  int itemPosition = recyclerView.getChildLayoutPosition(view);
                         MapResult item = mapResultList.get(position);
                         Toast.makeText(getBaseContext(), item.getTeamName() + " Selected ", Toast.LENGTH_LONG).show();
                     }
@@ -89,13 +80,12 @@ public class ResultActivity extends AppCompatActivity {
     }
 
 
-    private void prepareTeamData() throws Exception {
+    private void prepareResultData() throws Exception {
 
         Log.d("Insert: ", "Inserting ..");
         List<MapResult> results = db.getAllResult();
         for (MapResult res : results) {
             mapResultList.add(res);
-            Log.d("resultats: ", res.toString());
         }
         mAdapter.notifyDataSetChanged();
     }

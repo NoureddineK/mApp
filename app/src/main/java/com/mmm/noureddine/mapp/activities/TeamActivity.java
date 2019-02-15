@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.mmm.noureddine.mapp.components.MapResult;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.mmm.noureddine.mapp.R;
@@ -47,8 +48,6 @@ public class TeamActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams);
-        //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         team_name = (EditText) findViewById(R.id.team_name);
 
@@ -70,7 +69,6 @@ public class TeamActivity extends AppCompatActivity {
                 new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        //  int itemPosition = recyclerView.getChildLayoutPosition(view);
                         Team item = teamList.get(position);
                         Toast.makeText(getBaseContext(), item.getName() + " Selected ", Toast.LENGTH_LONG).show();
                     }
@@ -95,8 +93,6 @@ public class TeamActivity extends AppCompatActivity {
 
         DBHandler db = new DBHandler(this);
         Log.d("Insert: ", "Inserting ..");
-        db.addTeam(new Team("Team A"));
-        db.addTeam(new Team("Team B"));
         List<Team> teams = db.getAllTeams();
         for (Team team : teams) {
             teamList.add(team);
@@ -124,6 +120,9 @@ public class TeamActivity extends AppCompatActivity {
             db.addTeam(team);
             teamList.add(team);
             mAdapter.notifyDataSetChanged();
+            team_name.setText("");
+        } else {
+            Toast.makeText(getBaseContext(), "Please input your Team Name!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -131,10 +130,26 @@ public class TeamActivity extends AppCompatActivity {
         if (team != null) {
             teamList.remove(team);
             DBHandler db = new DBHandler(this);
+            List<Player> players = db.getAllPlayers();
+            List<MapResult> results = db.getAllResult();
+            if (players.size() != 0) {
+                for (Player p : players) {
+                    if (p.getPlayerTeam().matches(team.getName())) {
+                        db.deletePlayer(p);
+                    }
+                }
+            }
+
+            if (results.size() != 0) {
+                for (MapResult p : results) {
+                    if (p.getPlayerName().matches(team.getName())) {
+                        db.deleteResult(p);
+                    }
+                }
+            }
             db.deleteTeam(team);
             mAdapter.notifyDataSetChanged();
         }
     }
-
 
 }

@@ -2,6 +2,8 @@ package com.mmm.noureddine.mapp.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.mmm.noureddine.mapp.R;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +24,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mmm.noureddine.mapp.components.MapResult;
+import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
+import com.mmm.noureddine.mapp.utils.DbBitmapUtility;
+
 import java.util.List;
 
 public class LocationActivity extends AppCompatActivity
@@ -106,34 +113,46 @@ public class LocationActivity extends AppCompatActivity
             googleMap.setIndoorEnabled(true);
             googleMap.setBuildingsEnabled(true);
             googleMap.getUiSettings().setZoomControlsEnabled(true);
-            createMarker(48.117266, -1.6777926, "Rennes", "Bretagne");
-            createMarker(48.8534, 2.3488, "Paris", "Ici c'est Paris!");
             locationDB();
         }
     }
 
-    private void createMarker(double latitude, double longitude, String title, String snippet) {
+    private void createMarker(double latitude, double longitude, String title, String snippet, Bitmap bitmap) {
+        Bitmap myBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .anchor(0.5f, 0.5f)
                 .title(title)
-                .snippet(snippet));
+                .snippet(snippet))
+                .setIcon(BitmapDescriptorFactory.fromBitmap(myBitmap));
     }
 
     private void locationDB() {
         DBHandler db = new DBHandler(this);
         List<MapResult> listMap = db.getAllResult();
+
         if (listMap.size() > 0) {
             for (MapResult p : listMap) {
                 Log.d("locationDB:", p.toString());
                 double lat = p.getLatitude();
                 double lon = p.getLongitude();
-                createMarker(lat, lon, p.getPlayerName()+". Score: "+p.getScore(), p.getDate());
+                createMarker(lat, lon, p.getPlayerName()+". Score: "+p.getScore(), p.getDate(), getPlayerBitmap(p.getPlayerName()));
             }
         } else {
             Toast.makeText(
                     getBaseContext(), "No Scores to Show!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Bitmap getPlayerBitmap(String name){
+        DBHandler db = new DBHandler(this);
+        List<Player> players = db.getAllPlayers();
+        for(Player p : players){
+            if(p.getPlayerPseudo().matches(name)){
+               return DbBitmapUtility.getImage(p.getPlayerImage());
+            }
+        }
+        return null;
     }
 
 

@@ -1,10 +1,18 @@
 package com.mmm.noureddine.mapp.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,20 +58,14 @@ public class PlayerActivity extends AppCompatActivity {
     @Bind(R.id.plus_button)
     Button plus_button;
 
-    @Bind(R.id.take_picture_btn)
-    Button take_picture_btn;
-
     @Bind(R.id.validate_players)
     ImageView validate_players;
 
     private String namePlayer = "";
     private String nameTeam = "";
-
     private EditText player_name;
     Intent playerIntent;
-
     Spinner team_choice_spinner;
-
     private List<String> topicList;
     Spinner topic_choice_spinner;
     String topicName = "";
@@ -70,7 +73,6 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_players);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         player_name = (EditText) findViewById(R.id.player_name);
@@ -131,8 +133,6 @@ public class PlayerActivity extends AppCompatActivity {
         topic_choice_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                //  Toast.makeText(getBaseContext(), topicList.get(position) + " Selected ", Toast.LENGTH_LONG).show();
-                // nameTeam = topicList.get(position);
                 topicName = topicList.get(position);
             }
 
@@ -142,15 +142,20 @@ public class PlayerActivity extends AppCompatActivity {
             }
 
         });
-
-
     }
 
     @OnClick(R.id.plus_button)
     public void addingPlayers(View v) {
+        if(player_name.getText().toString().matches("")){
+            Toast.makeText(getBaseContext(), "Please input your Name!", Toast.LENGTH_LONG).show();
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.photo);
         builder.setInverseBackgroundForced(true);
-        builder.setMessage("Take a Picture!").setCancelable(
+        builder.setView(imageView);
+        builder.setMessage("Would you like to take a picture?").setCancelable(
                 false).setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -172,7 +177,6 @@ public class PlayerActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         String n = player_name.getText().toString();
                         AddingPlayerData(n);
-                        //AlertDialogActivity.this.finish();
                         dialog.cancel();
                     }
                 });
@@ -181,7 +185,6 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void prepareData() {
-
 
         //Get Teams from Data base to Spinner
         DBHandler db = new DBHandler(this);
@@ -195,17 +198,13 @@ public class PlayerActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         team_choice_spinner.setAdapter(adapter);
 
-
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
-        db.addPlayer(new Player("Player A", DbBitmapUtility.getBytes(icon), "Team A"));
-        db.addPlayer(new Player("Player B", DbBitmapUtility.getBytes(icon), "Team B"));
-
-        //db.updatePlayerTeam("Player A", "Team B");
         List<Player> players = db.getAllPlayers();
-        for (Player player : players) {
-            playerList.add(player);
+        if (players.size() != 0) {
+            for (Player player : players) {
+                playerList.add(player);
+            }
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -218,19 +217,11 @@ public class PlayerActivity extends AppCompatActivity {
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_icone);
             Player player;
             player = new Player(name1, DbBitmapUtility.getBytes(icon), nameTeam);
-            // db.addPlayerToTeam(name1, nameTeam);
             db.addPlayer(player);
             playerList.add(player);
             mAdapter.notifyDataSetChanged();
         }
     }
-
-    @OnClick(R.id.take_picture_btn)
-    public void takeAphoto(View v) {
-        playerIntent = new Intent(getBaseContext(), CameraActivity.class);
-        startActivityForResult(playerIntent, 0);
-    }
-
 
     @OnClick(R.id.validate_players)
     public void validatePlayers(View v) {
@@ -261,23 +252,17 @@ public class PlayerActivity extends AppCompatActivity {
 
             File imgFile = new File(path);
             if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                setPlayerImageFromList(namePlayer, DbBitmapUtility.getBytes(myBitmap), playerList);
-                db.updatePlayerImage(namePlayer, DbBitmapUtility.getBytes(myBitmap));
-                mAdapter.notifyDataSetChanged();
+
             }
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            Bitmap bitmap = Bitmap.createScaledBitmap(myBitmap, 100, 100, true);
+            setPlayerImageFromList(namePlayer, DbBitmapUtility.getBytes(getCroppedBitmap(bitmap)), playerList);
+            int u = db.updatePlayerImage(namePlayer, DbBitmapUtility.getBytes(getCroppedBitmap(bitmap)));
+            Log.d("Update: ", String.valueOf(u));
+            mAdapter.notifyDataSetChanged();
+
         } catch (Exception e) {
             Log.e("onActivityResult", e.getMessage());
-        }
-
-    }
-
-
-    private void setPlayerNameFromList(String name, String newName, List<Player> list) {
-        for (Player p : list) {
-            if (p.getPlayerPseudo().equals(name)) {
-                p.setPlayerPseudo(newName);
-            }
         }
     }
 
@@ -289,7 +274,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-
     private void removePlayer(Player player) {
         if (player != null) {
             playerList.remove(player);
@@ -297,6 +281,30 @@ public class PlayerActivity extends AppCompatActivity {
             db.deletePlayer(player);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return rotateImage(output, 270);
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        return rotatedImg;
     }
 
 }

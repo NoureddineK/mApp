@@ -1,19 +1,20 @@
 package com.mmm.noureddine.mapp.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.mmm.noureddine.mapp.R;
-import com.mmm.noureddine.mapp.utils.PopUp;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -22,16 +23,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    // @Bind(R.id.start_game)
-  //  ImageView start_game;
+
     CircleImageView start_game;
- /*   @Bind(R.id.rollDices)
-    Button recycleB;
+    @Bind(R.id.help)
+    Button helpBtn;
 
-    @Bind(R.id.team)
-    Button team;
-
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,18 +55,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-   /* @OnClick(R.id.rollDices)
-    public void lancherRollActivity(View v) {
-        Intent intent = new Intent(this, StartGameActivity.class);
-        startActivity(intent);
+    @OnClick(R.id.help)
+    public void gethelp(View view) {
+        showAddItemDialog(this);
     }
 
-    @OnClick(R.id.team)
-    public void selectTeam(View v) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-       startActivity(intent);
-       // PopUp.displayAlert(this, "Message!", "yes", "no");
+
+    private void showAddItemDialog(Context c) {
+        final TextView taskEditText = new TextView(c);
+        taskEditText.setVerticalScrollBarEnabled(true);
+        taskEditText.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+        AlertDialog dialog = new AlertDialog.Builder(c)
+                .setTitle("Welcome To Let's Mime! \n ")
+                .setMessage(getResources().getString(R.string.regles)+"\n"+getResources().getString(R.string.msg))
+                .setView(taskEditText)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String task = String.valueOf(taskEditText.getText());
+                    }
+                }).create();
+        dialog.show();
     }
-    */
 }

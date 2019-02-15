@@ -5,10 +5,11 @@
     <string name="input_team_name">Input your team name...</string>
     <string name="ready">Are You Ready! </string>
     <string name="let_go">Let\'s Go...</string>
-    <string name="input_pseudo_name">Input your Pseudo...</string>
+    <string name="input_pseudo_name">Input your Pseudo &amp; Choice your Team</string>
     <string name="image_popup">Take a picture!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="help">HELP</string>
 
     <string name="films">Films, Séries TV &amp; Dessins Animés</string>
     <string name="personnages">Personnages Célèbres</string>
@@ -32,5 +33,22 @@
     <string name="dropped_pin">Dropped in</string>
     <string name="Open_google_map">Open Google Map</string>
 
+    <string name="regles">RÈGLES DU JEU: </string>
+    <string name="msg">Les joueurs forment deux équipes
+    L\'une des deux équipes choisit un mot désignant un objet, un sujet d\'une petite histoire,
+        le nom d\'un personnage ou d\'une personnalité, etc..
+L\'autre équipe désigne le mime qui va devoir mimer le mot que les adversaires ont choisi pour faire gagner son équipe.
 
+Après chaque réussite, les équipes changent de rôle.
+
+L\'équipe qui doit deviner a le droit de poser des questions au mime et à l\'équipe adverse.
+
+A leur tour, les adversaires ont l\'obligation de confirmer
+        ou d\'infirmer simplement la justesse des questions et des remarques de l\'autre équipe.
+
+La réussite du jeu dépend surtout de l\'habileté du mime.
+
+Vous pouvez corser le jeu en ajoutant un minuteur :
+        le mime doit faire deviner le mot à son équipe en moins de 1 ou 2 minutes par exemple
+</string>
 </resources>

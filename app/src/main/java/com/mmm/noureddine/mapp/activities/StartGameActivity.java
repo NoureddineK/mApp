@@ -4,9 +4,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
@@ -21,11 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmm.noureddine.mapp.R;
-import com.mmm.noureddine.mapp.components.ProviderLocationTracker;
 import com.mmm.noureddine.mapp.components.Player;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class StartGameActivity extends AppCompatActivity {
     private List<String> teams;
 
     private Button openWikiBtn;
+    private boolean playingSound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +120,7 @@ public class StartGameActivity extends AppCompatActivity {
                 generateNewMime();
                 progressBar.setProgress(0);
                 myCountDownTimer.start();
+                // audio.stop();
                 start_chrono.setEnabled(false);
                 finger_bad_view.setEnabled(true);
                 finger_good_view.setEnabled(true);
@@ -143,7 +147,6 @@ public class StartGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 generateNewMime();
-                //TODO GET RIGHT PLAYER NAMES
                 hash.get(teams.get(numTeam)).get(numPlayer).incrementScore();
             }
         });
@@ -169,18 +172,6 @@ public class StartGameActivity extends AppCompatActivity {
         });
 
     }
-
-    private void startSession() {
-
-
-    }
-
-
-    private void endSession() {
-
-
-    }
-
 
     private void init() {
         rollDices = (Button) findViewById(R.id.rollDices);
@@ -214,6 +205,7 @@ public class StartGameActivity extends AppCompatActivity {
         teams = new ArrayList(hash.keySet());
         createDuck();
         nextPlayer();
+        //audio = new MediaPlayer();
 
     }
 
@@ -327,11 +319,15 @@ public class StartGameActivity extends AppCompatActivity {
         public void onTick(long millisUntilFinished) {
             int progress = (int) (millisUntilFinished / 300);
             progressBar.setProgress(progress);
+            if((progress/10) == 4 && !playingSound){
+                playSound();
+            }
         }
 
         @Override
         public void onFinish() {
             this.cancel();
+            playingSound = false;
             progressBar.setProgress(100);
             start_chrono.setEnabled(true);
             finger_bad_view.setEnabled(false);
@@ -342,6 +338,32 @@ public class StartGameActivity extends AppCompatActivity {
             }
 
         }
+
+    }
+
+    public void playSound() {
+        playingSound = true;
+            new Runnable() {
+                @Override
+                public void run() {
+                    playSound2();
+                }
+
+                public void playSound2() {
+                    AssetFileDescriptor afd = null;
+                    try {
+                        afd = getAssets().openFd("times_up.mp3");
+                        MediaPlayer audio = new MediaPlayer();
+                        audio.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                        audio.prepare();
+                        audio.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }.run();
 
     }
 

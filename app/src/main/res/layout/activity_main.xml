@@ -14,24 +14,6 @@
     android:screenOrientation="portrait"
     >
 
-  <!--  <Button
-        android:id="@+id/recycleBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dice"
-        app:layout_constraintStart_toStartOf="@id/activity_main"
-         android:onClick="lancherRollActivity" />
-
-    <Button
-        android:id="@+id/team"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:onClick="selectTeam"
-        android:text="Team"
-        app:layout_constraintStart_toEndOf="@+id/recycleBtn"
-        app:layout_constraintTop_toTopOf="parent" />
-        -->
 
   <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
       android:id="@+id/start_game"
@@ -59,6 +41,7 @@
       android:textAlignment="center"
       android:textColor="@android:color/holo_orange_dark"
       android:textSize="@dimen/textSize"
+      android:textStyle="bold"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -69,14 +52,30 @@
       android:layout_height="@dimen/text_height"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
-      android:layout_marginBottom="36dp"
+      android:layout_marginBottom="44dp"
       android:text="@string/let_go"
       android:textAlignment="center"
       android:textColor="@android:color/holo_orange_dark"
       android:textSize="@dimen/textSize"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@+id/help"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
 
 
+  <Button
+      android:id="@+id/help"
+      android:layout_width="90dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="24dp"
+      android:text="@string/help"
+      android:textSize="16dp"
+      android:textStyle="bold"
+      android:onClick="gethelp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      android:background="@android:color/holo_green_light"/>
 </android.support.constraint.ConstraintLayout>
