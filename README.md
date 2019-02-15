@@ -6,7 +6,7 @@
 * M2 Ingénierie Logicielle
 * Février 2019
 
-
+### L’application:
 * Un jeu des mimes par équipe
 * Les joueurs introduisent leurs Pseudos, choisissent leurs équipes.
  * Le joueur doit faire découvrir à ses partenaires le plus de mimes possibles.
