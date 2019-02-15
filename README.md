@@ -1,4 +1,11 @@
 # Let's Mime
+### Projet MMM
+
+## Réalisé par: 
+* Noureddine KADRI & Fahim MERZOUK
+* M2 Ingénierie Logicielle
+* Février 2019
+
 
 * Un jeu des mimes par équipe
 * Les joueurs introduisent leurs Pseudos, choisissent leurs équipes.
