@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mmm.noureddine.mapp.components.MapResult;
 import com.mmm.noureddine.mapp.components.Team;
 import com.mmm.noureddine.mapp.db.DBHandler;
 import com.mmm.noureddine.mapp.components.Player;
@@ -146,7 +147,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     @OnClick(R.id.plus_button)
     public void addingPlayers(View v) {
-        if(player_name.getText().toString().matches("")){
+        if (player_name.getText().toString().matches("")) {
             Toast.makeText(getBaseContext(), "Please input your Name!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -276,11 +277,23 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void removePlayer(Player player) {
         if (player != null) {
-            playerList.remove(player);
             DBHandler db = new DBHandler(this);
+            playerList.remove(player);
             db.deletePlayer(player);
+            removePlayerResult(player.getPlayerPseudo());
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void removePlayerResult(String name) {
+        DBHandler db = new DBHandler(this);
+        List<MapResult> results = db.getAllResult();
+        for (MapResult mapResult : results) {
+            if (mapResult.getPlayerName().matches(name)) {
+                db.deleteResult(mapResult);
+            }
+        }
+
     }
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
