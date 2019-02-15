@@ -38,6 +38,7 @@ import com.mmm.noureddine.mapp.adapter.PlayersAdapter;
 import com.mmm.noureddine.mapp.R;
 import com.mmm.noureddine.mapp.components.RecyclerItemClickListener;
 import com.mmm.noureddine.mapp.utils.DbBitmapUtility;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class PlayerActivity extends AppCompatActivity {
@@ -75,6 +77,7 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players);
+        ButterKnife.bind(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         player_name = (EditText) findViewById(R.id.player_name);
         team_choice_spinner = (Spinner) findViewById(R.id.team_choice);
@@ -153,7 +156,9 @@ public class PlayerActivity extends AppCompatActivity {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.photo);
+        Picasso.get()
+                .load(R.drawable.photo)
+                .into(imageView);
         builder.setInverseBackgroundForced(true);
         builder.setView(imageView);
         builder.setMessage("Would you like to take a picture?").setCancelable(

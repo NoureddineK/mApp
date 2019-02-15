@@ -34,21 +34,17 @@
     <string name="Open_google_map">Open Google Map</string>
 
     <string name="regles">RÈGLES DU JEU: </string>
-    <string name="msg">Les joueurs forment deux équipes
-    L\'une des deux équipes choisit un mot désignant un objet, un sujet d\'une petite histoire,
-        le nom d\'un personnage ou d\'une personnalité, etc..
-L\'autre équipe désigne le mime qui va devoir mimer le mot que les adversaires ont choisi pour faire gagner son équipe.
+    <string name="msg">
+        Les joueurs forment deux équipes en moins. Ils créent leurs pseudos, et prendre une photo d’avatar au choix.
+Chaque équipe doit contenir en minimum 2 joueurs.
+Les joueurs choisissent un thème, lancent la partie ensuite.
+Les joueurs devront faire deviner à leurs équipes un maximum de mimes.
+Le tour d’un joueur dure 30 secondes.
 
-Après chaque réussite, les équipes changent de rôle.
+La partie se termine lorsque la liste des mimes est finie.
+Les joueurs peuvent voir leurs scores, et visualiser les lieux où ils ont fait leurs parties.
 
-L\'équipe qui doit deviner a le droit de poser des questions au mime et à l\'équipe adverse.
-
-A leur tour, les adversaires ont l\'obligation de confirmer
-        ou d\'infirmer simplement la justesse des questions et des remarques de l\'autre équipe.
-
-La réussite du jeu dépend surtout de l\'habileté du mime.
-
-Vous pouvez corser le jeu en ajoutant un minuteur :
-        le mime doit faire deviner le mot à son équipe en moins de 1 ou 2 minutes par exemple
+L’utilisateur peut supprimer une équipe, un joueur ou un score.
+L’application doit avoir accès à la localisation et au stockage afin d’afficher les résultats ainsi stocker les images d’avatars.
 </string>
 </resources>
