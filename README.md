@@ -2,7 +2,7 @@
 ### Projet MMM
 
 ## Réalisé par: 
-* Noureddine KADRI
+* Noureddine KADRI & Fahim MERZOUK
 * M2 Ingénierie Logicielle
 * Février 2019
 
