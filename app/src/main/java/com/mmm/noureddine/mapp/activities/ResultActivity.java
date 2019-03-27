@@ -26,7 +26,7 @@ public class ResultActivity extends AppCompatActivity {
     private List<MapResult> mapResultList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ResultAdapter mAdapter;
-    private Button map_btn;
+    //private Button map_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         db = new DBHandler(this);
 
-        map_btn = (Button) findViewById(R.id.map_btn);
+       // map_btn = (Button) findViewById(R.id.map_btn);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_res);
         try {
             prepareResultData();
@@ -67,15 +67,6 @@ public class ResultActivity extends AppCompatActivity {
                     }
                 })
         );
-
-        map_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), LocationActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
-
 
     }
 

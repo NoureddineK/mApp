@@ -48,15 +48,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activities.LocationActivity" />
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCyCDADMwCM7CsX_L2ma9dhPoB8Qp6vLYs" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
         <activity android:name=".activities.ResultActivity"></activity>
     </application>
 
