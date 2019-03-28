@@ -25,4 +25,6 @@
 * Prise et sauvegarde de photos
 * Utilisation de RecyclerView.
 
-
+### Installation:
+Votre téléphone vous demandera sûrement une autorisation pour installer ce genre de fichier, alors cliquez sur 'OK'.
+Donnez également l'autorisation de stockage à l'application afin qu'elle puisse enregistrer les résultats des parties avant de commencer à jouer.
